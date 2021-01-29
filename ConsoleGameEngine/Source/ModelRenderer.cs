@@ -7,11 +7,8 @@ namespace ConsoleGameEngine
     {
         private readonly ConsoleEngine Engine;
 
-        public List<Model> Models { get; set; }
-
         public ModelRenderer(ConsoleEngine engine)
         {
-            Models = new List<Model>();
             lightDirection = Vector3.Normalize(lightDirection);
 
             CameraPosition = new Vector3(0, 0, -4.0f);
@@ -55,9 +52,9 @@ namespace ConsoleGameEngine
             projectionMatrix *= Matrix.RotationMatrixY(CameraRotation);
         }
 
-        public void UpdateVisibleFaces()
+        public void UpdateVisibleFaces(List<Model> batch)
         {
-            foreach (var model in Models)
+            foreach (var model in batch)
             {
                 var mesh = model.Mesh;
                 var modelPosition = model.Position;
@@ -127,8 +124,6 @@ namespace ConsoleGameEngine
                 else
                     Engine.Triangle(b, a, c, 10, t.c);
             }
-
-            Engine.SetPixel(new Point(0, 0), 4);
 
             trianglesToRaster.Clear();
         }

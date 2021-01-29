@@ -1,5 +1,6 @@
 ﻿using ConsoleGameEngine;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace RexMinus1
@@ -10,6 +11,7 @@ namespace RexMinus1
         private SpriteRenderer spriteRenderer;
 
         private Sprite test;
+        private List<Model> models = new List<Model>();
 
         private static void Main(string[] args)
         {
@@ -28,9 +30,9 @@ namespace RexMinus1
 
             // ładowanie modeli
             modelRenderer = new ModelRenderer(Engine);
-            modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(0, 0, 2), RotationX = 1.241f });
-            modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(4, 0, 2), RotationX = 2.151f });
-            modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(-4, 0, 2), RotationX = 0.21f }); ;
+            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(0, 0, 2), RotationX = 1.241f });
+            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(4, 0, 2), RotationX = 2.151f });
+            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(-4, 0, 2), RotationX = 0.21f }); ;
 
             // ładowanie spriteów
             spriteRenderer = new SpriteRenderer(Engine);
@@ -40,9 +42,9 @@ namespace RexMinus1
         // co każdą klatkę - tutaj obliczenia
         public override void Update()
         {
-            modelRenderer.Models[0].RotationY += 0.1f;
-            modelRenderer.Models[1].RotationY += 0.1f;
-            modelRenderer.Models[2].RotationY += 0.1f;
+            models[0].RotationY += 0.1f;
+            models[1].RotationY += 0.1f;
+            models[2].RotationY += 0.1f;
 
             if (Engine.GetKeyDown(ConsoleKey.LeftArrow))
             {
@@ -67,7 +69,7 @@ namespace RexMinus1
             }
 
             modelRenderer.UpdateViewMatrix();
-            modelRenderer.UpdateVisibleFaces();
+            modelRenderer.UpdateVisibleFaces(models);
         }
 
         // co każdą klatkę - tutaj rendering
