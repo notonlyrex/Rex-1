@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace ConsoleGameEngine
@@ -12,6 +13,11 @@ namespace ConsoleGameEngine
             lightDirection = Vector3.Normalize(lightDirection);
 
             CameraPosition = new Vector3(0, 0, -4.0f);
+
+            CameraForward = new Vector3(0, 0, 1);
+            CameraLeft = new Vector3(0, 0, 1);
+            CameraRight = new Vector3(0, 0, -1);
+
             LookDirection = new Vector3(0, 0, -1.0f);
 
             this.consoleHeight = engine.WindowSize.Y;
@@ -26,6 +32,10 @@ namespace ConsoleGameEngine
         private readonly float aspectRatio;
 
         public Vector3 CameraPosition { get; set; }
+        
+        public Vector3 CameraForward { get; set; }
+        public Vector3 CameraLeft { get; set; }
+        public Vector3 CameraRight { get; set; }
         public float CameraRotation { get; set; }
 
         public Vector3 LookDirection { get; set; }
@@ -38,6 +48,21 @@ namespace ConsoleGameEngine
         private Matrix projectionMatrix;
         private Matrix viewMatrix;
 
+        public void UpdateCameraRotation (float r)
+        {
+            CameraRotation += r;
+
+            CameraForward = CustomMath.SimpleRotateVectorByRadian(CameraForward, r);
+            CameraLeft = CustomMath.SimpleRotateVectorByDegree(CameraForward, 90);
+            CameraRight = CustomMath.SimpleRotateVectorByDegree(CameraForward, -90);
+
+        }
+
+        public void UpdateCameraMovement(float mov_forward, float mov_pane)
+        {
+            CameraPosition = new Vector3(CameraPosition.X, CameraPosition.Y, CameraPosition.Z) + CameraForward * mov_forward + CameraLeft * mov_pane;
+        }
+
         public void UpdateViewMatrix()
         {
             viewMatrix = Matrix.LookAtLH(CameraPosition, LookDirection, Vector3.UnitY);
@@ -45,12 +70,18 @@ namespace ConsoleGameEngine
             viewMatrix *= Matrix.RotationMatrixY(CameraRotation);
 
             float near = 0.1f;
-            float far = 100.0f;
-            float fov = 70.0f;
+            float far = 80.0f;
+            float fov = 60.0f;
 
             projectionMatrix = Matrix.ProjectionMatrix(fov, aspectRatio, near, far);
+
             projectionMatrix *= Matrix.RotationMatrixY(CameraRotation);
+
+
+
         }
+
+
 
         public void UpdateVisibleFaces(List<Model> batch)
         {
