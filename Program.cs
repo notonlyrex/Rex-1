@@ -7,6 +7,9 @@ namespace RexMinus1
     internal class HelloWorld : ConsoleGame
     {
         private ModelRenderer modelRenderer;
+        private SpriteRenderer spriteRenderer;
+
+        private Sprite test;
 
         private static void Main(string[] args)
         {
@@ -22,6 +25,9 @@ namespace RexMinus1
             modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(0, 0, 2), RotationX = 1.241f });
             modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(4, 0, 2), RotationX = 2.151f });
             modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(-4, 0, 2), RotationX = 0.21f }); ;
+
+            spriteRenderer = new SpriteRenderer(Engine);
+            test = Sprite.FromFile("Assets/mood-kid.png");
         }
 
         public override void Update()
@@ -61,6 +67,7 @@ namespace RexMinus1
             Engine.ClearBuffer();
 
             modelRenderer.Render();
+            spriteRenderer.RenderSingle(new Point(0, 0), test);
 
             Engine.DisplayBuffer();
         }
