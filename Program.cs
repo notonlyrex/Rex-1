@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace RexMinus1
 {
-    internal class HelloWorld : ConsoleGame
+    internal class RexMinus1 : ConsoleGame
     {
         private ModelRenderer modelRenderer;
         private SpriteRenderer spriteRenderer;
@@ -13,23 +13,31 @@ namespace RexMinus1
 
         private static void Main(string[] args)
         {
-            new HelloWorld().Construct(128, 64, 8, 8, FramerateMode.MaxFps);
+            // parametry wyświetlania
+            new RexMinus1().Construct(128, 64, 8, 8, FramerateMode.MaxFps);
         }
 
+        // na początku działania gry
         public override void Create()
         {
+            // paleta domyślna
             Engine.SetPalette(Palettes.Default);
+
+            // docelowy framerate
             TargetFramerate = 30;
 
+            // ładowanie modeli
             modelRenderer = new ModelRenderer(Engine);
             modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(0, 0, 2), RotationX = 1.241f });
             modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(4, 0, 2), RotationX = 2.151f });
             modelRenderer.Models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(-4, 0, 2), RotationX = 0.21f }); ;
 
+            // ładowanie spriteów
             spriteRenderer = new SpriteRenderer(Engine);
             test = Sprite.FromFile("Assets/mood-kid.png");
         }
 
+        // co każdą klatkę - tutaj obliczenia
         public override void Update()
         {
             modelRenderer.Models[0].RotationY += 0.1f;
@@ -62,6 +70,7 @@ namespace RexMinus1
             modelRenderer.UpdateVisibleFaces();
         }
 
+        // co każdą klatkę - tutaj rendering
         public override void Render()
         {
             Engine.ClearBuffer();

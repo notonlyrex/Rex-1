@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ConsoleGameEngine
 {
@@ -7,17 +6,20 @@ namespace ConsoleGameEngine
     {
         private readonly ConsoleEngine engine;
 
-        public List<Sprite> Batch;
+        public List<(Sprite, Point)> Batch;
 
         public SpriteRenderer(ConsoleEngine engine)
         {
             this.engine = engine;
-            Batch = new List<Sprite>();
+            Batch = new List<(Sprite, Point)>();
         }
 
         public void RenderBatch()
         {
-            throw new NotImplementedException();
+            foreach (var (sprite, origin) in Batch)
+            {
+                RenderSingle(origin, sprite);
+            }
         }
 
         public void RenderSingle(Point origin, Sprite s)
