@@ -77,8 +77,17 @@ namespace RexMinus1
         {
             Engine.ClearBuffer();
 
+            // renderowanie modeli
             modelRenderer.Render();
+
+            // renderowanie pojedynczego sprite
             spriteRenderer.RenderSingle(new Point(0, 0), test);
+
+            // jakieś testy
+            Engine.Line(new Point(0, 0), new Point(50, 50), 4, ConsoleCharacter.BoxDrawingL_DR);
+            Engine.Arc(new Point(70, 60), 5, 2, arc: 360, ConsoleCharacter.Medium);
+
+            Engine.SetPixel(new Point(0, 0), 14, ConsoleCharacter.Light);
 
             Engine.DisplayBuffer();
         }
