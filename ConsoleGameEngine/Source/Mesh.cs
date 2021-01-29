@@ -1,10 +1,9 @@
-﻿using ConsoleGameEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 
-namespace RexMinus1
+namespace ConsoleGameEngine
 {
     public struct Triangle
     {
