@@ -6,8 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ConsoleGameEngine" Version="1.0.0" />
+    <Compile Remove="ConsoleGameEngine\**" />
+    <EmbeddedResource Remove="ConsoleGameEngine\**" />
+    <None Remove="ConsoleGameEngine\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="ConsoleGameEngine\Source\ConsoleGameEngine.csproj" />
   </ItemGroup>
 
   <ItemGroup>
