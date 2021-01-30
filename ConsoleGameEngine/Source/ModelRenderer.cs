@@ -13,18 +13,22 @@ namespace ConsoleGameEngine
             lightDirection = Vector3.Normalize(lightDirection);
 
             CameraPosition = new Vector3(0, 0, -4.0f);
+            CameraRotation = 0.0f;
 
             CameraForward = new Vector3(0, 0, 1);
             CameraLeft = new Vector3(0, 0, 1);
             CameraRight = new Vector3(0, 0, -1);
 
-            LookDirection = new Vector3(0, 0, -1.0f);
+            //LookDirection = new Vector3(0, 0, -1.0f);
 
             this.consoleHeight = engine.WindowSize.Y;
             this.consoleWidth = engine.WindowSize.X;
             this.Engine = engine;
 
             aspectRatio = (float)consoleHeight / (float)consoleWidth;
+
+            projectionMatrix = Matrix.ProjectionMatrix(fov, aspectRatio, near, far);
+
         }
 
         private readonly int consoleHeight;
@@ -38,7 +42,11 @@ namespace ConsoleGameEngine
         public Vector3 CameraRight { get; set; }
         public float CameraRotation { get; set; }
 
-        public Vector3 LookDirection { get; set; }
+        public float near = 0.1f;
+        public float far = 180.0f;
+        public float fov = 60.0f;
+
+        //public Vector3 LookDirection { get; set; }
         private Vector3 lightDirection = new Vector3(0.0f, 0.0f, 0f);
 
         private List<Triangle> trianglesToRaster = new List<Triangle>();
@@ -56,6 +64,8 @@ namespace ConsoleGameEngine
             CameraLeft = CustomMath.SimpleRotateVectorByDegree(CameraForward, 90);
             CameraRight = CustomMath.SimpleRotateVectorByDegree(CameraForward, -90);
 
+            projectionMatrix *= Matrix.RotationMatrixY(r);
+
         }
 
         public void UpdateCameraMovement(float mov_forward, float mov_pane)
@@ -65,25 +75,22 @@ namespace ConsoleGameEngine
 
         public void UpdateViewMatrix()
         {
-            viewMatrix = Matrix.LookAtLH(CameraPosition, LookDirection, Vector3.UnitY);
-
+           
+            viewMatrix = Matrix.LookAtLH(CameraPosition, CameraForward, Vector3.UnitY);
             viewMatrix *= Matrix.RotationMatrixY(CameraRotation);
 
-            float near = 0.1f;
-            float far = 80.0f;
-            float fov = 60.0f;
-
-            projectionMatrix = Matrix.ProjectionMatrix(fov, aspectRatio, near, far);
-
-            projectionMatrix *= Matrix.RotationMatrixY(CameraRotation);
-
-
+            
 
         }
 
+        public void UpdateFOV(float f)
+        {
+            fov += f;
+            projectionMatrix = Matrix.ProjectionMatrix(fov, aspectRatio, near, far);
+        }
 
 
-        public void UpdateVisibleFaces(List<Model> batch)
+            public void UpdateVisibleFaces(List<Model> batch)
         {
             foreach (var model in batch)
             {
@@ -92,18 +99,18 @@ namespace ConsoleGameEngine
                 var yRot = model.RotationY;
                 var xRot = model.RotationX;
 
-                for (int i = 0; i < mesh.Triangles.Length; i++)
-                {
-                    Triangle vertex = mesh.Triangles[i];
-
-                    var worldMatrix = Matrix.RotationMatrixY(yRot) * Matrix.RotationMatrixX(xRot) *
+                var modelMatrix = Matrix.RotationMatrixY(yRot) * Matrix.RotationMatrixX(xRot) *
                                       Matrix.Translation(modelPosition);
 
-                    var transformMatrix = worldMatrix * viewMatrix * projectionMatrix;
+                var transformMatrix = modelMatrix * viewMatrix * projectionMatrix;
 
-                    Triangle transformed = vertex.MatMul(transformMatrix);
+                for (int i = 0; i < mesh.Triangles.Length; i++)
+                {   
+                    Triangle tri = mesh.Triangles[i];
+                    Triangle transformed = tri.MatMul(transformMatrix);
 
                     Vector3 normal, line1, line2;
+
                     line1 = transformed.p[1] - transformed.p[0];
                     line2 = transformed.p[2] - transformed.p[0];
 
@@ -112,14 +119,7 @@ namespace ConsoleGameEngine
 
                     if (Vector3.Dot(normal, transformed.p[0] - CameraPosition) < 0.0f)
                     {
-                        float l = Vector3.Dot(lightDirection, normal);
-
-                        ConsoleCharacter character = ConsoleCharacter.Light;
-                        if (l > 0.4) character = ConsoleCharacter.Medium;
-                        if (l > 0.7) character = ConsoleCharacter.Dark;
-                        if (l > 1) character = ConsoleCharacter.Full;
-
-                        // projekterar från 3D -> 2D
+                        // projekcja 3D -> 2D
                         Triangle projected = new Triangle(null);
                         projected = transformed.MatMul(projectionMatrix);
 
@@ -131,14 +131,22 @@ namespace ConsoleGameEngine
                         projected.p[0].X *= 0.5f * consoleWidth; projected.p[0].Y *= 0.5f * consoleHeight;
                         projected.p[1].X *= 0.5f * consoleWidth; projected.p[1].Y *= 0.5f * consoleHeight;
                         projected.p[2].X *= 0.5f * consoleWidth; projected.p[2].Y *= 0.5f * consoleHeight;
-
+                        
+                        float l = Vector3.Dot(lightDirection, normal);
+                        ConsoleCharacter character;
+                        if (l > 1) character = ConsoleCharacter.Full;
+                        else if (l > 0.7) character = ConsoleCharacter.Dark;
+                        else if (l > 0.4) character = ConsoleCharacter.Medium;
+                        else character = ConsoleCharacter.Light;
                         projected.c = character;
+
                         trianglesToRaster.Add(projected);
                     }
+
                 }
             }
 
-            // sortera
+            // sortowanie
             trianglesToRaster.Sort((t1, t2) => ((t2.p[0].Z + t2.p[1].Z + t2.p[2].Z).CompareTo((t1.p[0].Z + t1.p[1].Z + t1.p[2].Z))));
         }
 

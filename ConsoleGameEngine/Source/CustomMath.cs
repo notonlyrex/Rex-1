@@ -30,8 +30,6 @@ namespace ConsoleGameEngine
             float c;
 
             c = MathF.Acos((float)Vector3.Dot(Vector3.Normalize(a), Vector3.Normalize(b)));
-
-
     
             if (ConvertRadiansToDegrees(MathF.Atan2(b.Z - a.Z, b.X - a.X)) < 90)
                 c = -c;

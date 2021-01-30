@@ -158,26 +158,40 @@ namespace ConsoleGameEngine
             mat.m[3, 0] = 1.0f; mat.m[3, 1] = 1.0f; mat.m[3, 2] = 1.0f; mat.m[3, 3] = 1.0f;
             return mat;
         }
-
+        /// <summary>
+        ///  LookAtLH
+        /// </summary>
+        /// <param name="eye">that defines the camera point. This value is used in translation</param>
+        /// <param name="target">that defines the camera look-at target</param>
+        /// <param name="up">that defines the up direction of the current world, usually [0, 1, 0]</param>
+        /// <returns></returns>
         public static Matrix LookAtLH(Vector3 eye, Vector3 target, Vector3 up)
         {
             Vector3 xaxis, yaxis, zaxis;
-            zaxis = Vector3.Subtract(target, eye); zaxis = Vector3.Normalize(zaxis);
-            xaxis = Vector3.Cross(up, zaxis); xaxis = Vector3.Normalize(xaxis);
+
+            zaxis = Vector3.Subtract(target, eye); 
+            zaxis = Vector3.Normalize(zaxis);
+
+            xaxis = Vector3.Cross(up, zaxis); 
+            xaxis = Vector3.Normalize(xaxis);
+
             yaxis = Vector3.Cross(zaxis, xaxis);
 
             Matrix result = Matrix.Identity();
-            result.m[0, 0] = xaxis.X; result.m[1, 0] = xaxis.Y; result.m[2, 0] = xaxis.Z;
-            result.m[0, 1] = yaxis.X; result.m[1, 1] = yaxis.Y; result.m[2, 1] = yaxis.Z;
-            result.m[0, 2] = zaxis.X; result.m[1, 2] = zaxis.Y; result.m[2, 2] = zaxis.Z;
 
-            result.m[3, 0] = Vector3.Dot(xaxis, eye);
-            result.m[3, 1] = Vector3.Dot(yaxis, eye);
-            result.m[3, 2] = Vector3.Dot(zaxis, eye);
+            result.m[0, 0] = xaxis.X; result.m[1, 0] = xaxis.Y; result.m[2, 0] = xaxis.Z; 
+            result.m[0, 1] = yaxis.X; result.m[1, 1] = yaxis.Y; result.m[2, 1] = yaxis.Z; 
+            result.m[0, 2] = zaxis.X; result.m[1, 2] = zaxis.Y; result.m[2, 2] = zaxis.Z; 
 
-            result.m[3, 0] = -result.m[3, 0];
-            result.m[3, 1] = -result.m[3, 1];
-            result.m[3, 2] = -result.m[3, 2];
+            //result.m[0, 3] = 0.0f;
+            //result.m[1, 3] = 0.0f;
+            //result.m[2, 3] = 0.0f;
+
+            result.m[3, 0] = -Vector3.Dot(xaxis, eye);
+            result.m[3, 1] = -Vector3.Dot(yaxis, eye);
+            result.m[3, 2] = -Vector3.Dot(zaxis, eye);
+
+            //result.m[3, 3] = 1.0f;
 
             return result;
         }
