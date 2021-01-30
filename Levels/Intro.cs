@@ -1,25 +1,25 @@
 ﻿using ConsoleGameEngine;
+using System;
 using System.Numerics;
 
 namespace RexMinus1.Levels
 {
     internal class Intro : Level
     {
-        private int counter;
+        private Timer timer;
 
         public override void Create()
         {
             models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
 
-            counter = 0;
+            timer = new Timer { Span = TimeSpan.FromSeconds(1) };
 
             base.Create();
         }
 
         public override void Update()
         {
-            counter++;
-            if (counter > 60)
+            if (timer.Elapsed)
                 LevelManager.GoToNext();
 
             base.Update();
