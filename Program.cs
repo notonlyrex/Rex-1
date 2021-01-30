@@ -1,5 +1,4 @@
 ﻿using ConsoleGameEngine;
-using System.Collections.Generic;
 
 namespace RexMinus1
 {
@@ -8,9 +7,7 @@ namespace RexMinus1
         private ModelRenderer modelRenderer;
         private SpriteRenderer spriteRenderer;
 
-        private Sprite test;
-        private List<Level> levels = new List<Level>();
-        private int currentLevel = 0;
+        private LevelManager levelManager;
 
         private static void Main(string[] args)
         {
@@ -30,26 +27,21 @@ namespace RexMinus1
             // ładowanie rendererów
             modelRenderer = new ModelRenderer(Engine);
             spriteRenderer = new SpriteRenderer(Engine);
+            levelManager = new LevelManager();
 
             // ładowanie poziomów i ekranów
-            levels.Add(new Levels.Test());
+            levelManager.Add(new Levels.Intro());
+            levelManager.Add(new Levels.Test());
 
             // inicjalizacja podstawowych rzeczy w poziomach
             // i ladowanie do pamięci wszystkiego
-            foreach (var item in levels)
-            {
-                item.Engine = Engine;
-                item.ModelRenderer = modelRenderer;
-                item.SpriteRenderer = spriteRenderer;
-
-                item.Create();
-            }
+            levelManager.Initialize(Engine, modelRenderer, spriteRenderer);
         }
 
         // co każdą klatkę - tutaj obliczenia
         public override void Update()
         {
-            levels[currentLevel].Update();
+            levelManager.CurrentLevel.Update();
         }
 
         // co każdą klatkę - tutaj rendering
@@ -58,10 +50,10 @@ namespace RexMinus1
             Engine.ClearBuffer();
 
             // SCENE RENDER
-            levels[currentLevel].Render();
+            levelManager.CurrentLevel.Render();
 
             // HUD RENDER
-            levels[currentLevel].DrawDebug();
+            levelManager.CurrentLevel.DrawDebug();
 
             Engine.DisplayBuffer();
         }

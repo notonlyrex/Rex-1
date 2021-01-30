@@ -14,6 +14,8 @@ namespace RexMinus1
 
         public SpriteRenderer SpriteRenderer { get; set; }
 
+        public LevelManager LevelManager { get; set; }
+
         public void DrawDebug()
         {
             Engine.WriteText(new Point(0, 0), "X: " + ModelRenderer.CameraRotation, 14);
