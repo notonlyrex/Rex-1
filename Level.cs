@@ -16,6 +16,8 @@ namespace RexMinus1
 
         public LevelManager LevelManager { get; set; }
 
+        public AnimationRenderer AnimationRenderer { get; set; }
+
         public void DrawDebug()
         {
             Engine.WriteText(new Point(0, 0), "X: " + ModelRenderer.CameraRotation, 14);
@@ -27,6 +29,11 @@ namespace RexMinus1
             Engine.WriteText(new Point(0, 8), "F: " + ModelRenderer.CameraForward.X + " " + ModelRenderer.CameraForward.Y + " " + ModelRenderer.CameraForward.Z, 14);
             Engine.WriteText(new Point(0, 9), "L: " + ModelRenderer.CameraLeft.X + " " + ModelRenderer.CameraLeft.Y + " " + ModelRenderer.CameraLeft.Z, 14);
             Engine.WriteText(new Point(0, 10), "R: " + ModelRenderer.CameraRight.X + " " + ModelRenderer.CameraRight.Y + " " + ModelRenderer.CameraRight.Z, 14);
+        }
+
+        protected void PlayAnimation(Animation anim)
+        {
+            AnimationRenderer.Add(anim);
         }
 
         public virtual void Create()
@@ -43,6 +50,7 @@ namespace RexMinus1
         public virtual void Render()
         {
             ModelRenderer.Render();
+            AnimationRenderer.Render();
         }
     }
 }

@@ -8,6 +8,7 @@ namespace RexMinus1
         private SpriteRenderer spriteRenderer;
 
         private LevelManager levelManager;
+        private AnimationRenderer animationRenderer;
 
         private static void Main(string[] args)
         {
@@ -28,6 +29,7 @@ namespace RexMinus1
             modelRenderer = new ModelRenderer(Engine);
             spriteRenderer = new SpriteRenderer(Engine);
             levelManager = new LevelManager();
+            animationRenderer = new AnimationRenderer(Engine);
 
             // ładowanie poziomów i ekranów
             levelManager.Add(new Levels.Intro());
@@ -35,7 +37,7 @@ namespace RexMinus1
 
             // inicjalizacja podstawowych rzeczy w poziomach
             // i ladowanie do pamięci wszystkiego
-            levelManager.Initialize(Engine, modelRenderer, spriteRenderer);
+            levelManager.Initialize(Engine, modelRenderer, spriteRenderer, animationRenderer);
         }
 
         // co każdą klatkę - tutaj obliczenia

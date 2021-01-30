@@ -15,18 +15,21 @@ namespace RexMinus1
             levels.Add(level);
         }
 
-        public void GoToNext()
+        public void GoTo(int level)
         {
-            currentLevel += 1;
+            currentLevel += level;
+            CurrentLevel.AnimationRenderer.Clear();
         }
 
-        public void Initialize(ConsoleEngine engine, ModelRenderer modelRenderer, SpriteRenderer spriteRenderer)
+        public void Initialize(ConsoleEngine engine, ModelRenderer modelRenderer, SpriteRenderer spriteRenderer, AnimationRenderer animationRenderer)
         {
             foreach (var item in levels)
             {
                 item.Engine = engine;
                 item.ModelRenderer = modelRenderer;
                 item.SpriteRenderer = spriteRenderer;
+                item.AnimationRenderer = animationRenderer;
+
                 item.LevelManager = this;
 
                 item.Create();
