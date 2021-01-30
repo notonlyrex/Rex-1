@@ -13,7 +13,7 @@ namespace RexMinus1.Levels
         {
             timer.Reset();
 
-            PlayerManager.Instance.Shields = 1;
+            PlayerManager.Instance.Shield = 1;
             PlayerManager.Instance.Energy = 1;
             PlayerManager.Instance.Heat = 0;
 

@@ -51,7 +51,7 @@ namespace RexMinus1
             SpriteRenderer.RenderSingle(new Point(47, 59), hud_middle);
             SpriteRenderer.RenderSingle(new Point(83, 59), hud_right);
 
-            DrawBar(new Point(13, 59), 31, PlayerManager.Instance.Shields, 4);
+            DrawBar(new Point(13, 59), 31, PlayerManager.Instance.Shield, 4);
             DrawBar(new Point(48, 59), 31, PlayerManager.Instance.Energy, 4);
             DrawBar(new Point(83, 59), 31, PlayerManager.Instance.Heat, 4);
 
@@ -77,6 +77,8 @@ namespace RexMinus1
         public virtual void Start()
         {
             AnimationRenderer.Clear();
+            ModelRenderer.CameraPosition = ModelRenderer.StartingCameraPosition;
+            ModelRenderer.CameraRotation = 0.0f;
         }
 
         public virtual void Create()
@@ -103,24 +105,27 @@ namespace RexMinus1
             // uruchamiania efektów kolizji gracza ze wszystkimi obiektami
             foreach (var item in models.OfType<ICollision>())
             {
-                item.Collision(ModelRenderer.CameraPosition);
+                if (item.Collision(ModelRenderer.CameraPosition))
+                {
+                    PlayerManager.Instance.Energy -= item.CollisionAttack;
+                    PlayerManager.Instance.Shield -= item.CollisionAttack;
+                }
             }
         }
 
         public virtual void RemoveObjects()
         {
             // usuwanie zniszczonych wrogów
-            models.RemoveAll(x => x.GetType() == typeof(Enemy) && (x as Enemy).Shield <= 0);
+            models.RemoveAll(x => x is Enemy && (x as Enemy).Shield <= 0);
 
             // usuwanie zebranych astronautów
             models.RemoveAll(x => x.GetType() == typeof(Astronaut) && (x as Astronaut).IsCollected);
         }
 
-        public virtual void CheckWin()
+        public virtual bool CheckWin()
         {
             // sprawdzenie warunku zwycięstwa
-            if (models.OfType<Astronaut>().Count() == 0)
-                LevelManager.GoTo(LevelManager.GameOverWin);
+            return models.OfType<Astronaut>().Count() == 0;
         }
 
         public virtual void UpdateHeatEnergy()
@@ -133,14 +138,16 @@ namespace RexMinus1
                 PlayerManager.Instance.Energy += 0.01f;
         }
 
-        public virtual void CheckLose()
+        public virtual bool CheckLose()
         {
             // sprawdzenie warunków przegranej
             if (PlayerManager.Instance.Energy <= 0.05)
-                LevelManager.GoTo(LevelManager.GameOverLose);
+                return true;
 
             if (PlayerManager.Instance.Heat >= 0.95)
-                LevelManager.GoTo(LevelManager.GameOverLose);
+                return true;
+
+            return false;
         }
 
         public virtual void Update()

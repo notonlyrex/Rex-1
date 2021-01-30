@@ -7,11 +7,13 @@ namespace ConsoleGameEngine
     {
         private readonly ConsoleEngine Engine;
 
+        public readonly Vector3 StartingCameraPosition = new Vector3(0, 0, -4.0f);
+
         public ModelRenderer(ConsoleEngine engine)
         {
             lightDirection = Vector3.Normalize(lightDirection);
 
-            CameraPosition = new Vector3(0, 0, -4.0f);
+            CameraPosition = StartingCameraPosition;
             CameraRotation = 0.0f;
 
             CameraForward = new Vector3(0, 0, 1);

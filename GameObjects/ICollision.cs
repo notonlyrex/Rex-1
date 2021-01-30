@@ -4,6 +4,8 @@ namespace RexMinus1.GameObjects
 {
     public interface ICollision
     {
-        void Collision(Vector3 player);
+        bool Collision(Vector3 player);
+
+        float CollisionAttack { get; set; }
     }
 }

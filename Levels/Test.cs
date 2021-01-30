@@ -50,18 +50,16 @@ namespace RexMinus1.Levels
 
         public override void Create()
         {
-            models.Add(new Enemy
+            models.Add(new Mine
             {
-                Mesh = Mesh.LoadFromObj("Assets/obj_mine.obj"),
                 Position = new Vector3(0, 0, 23),
-                RotationX = 1.241f,
-                Shield = 1f
+                RotationX = 1.241f
             });
 
             models.Add(new Astronaut
             {
                 Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj"),
-                Position = new Vector3(15, 0, 3),
+                Position = new Vector3(30, 0, 3),
             });
 
             laser = new Animations.Laser();
@@ -145,8 +143,11 @@ namespace RexMinus1.Levels
             }
 
             // sprawdzenie warunków zwycięstwa i przegranej
-            base.CheckWin();
-            base.CheckLose();
+            //if (base.CheckWin())
+            //    LevelManager.GoTo(LevelManager.GameOverWin);
+
+            if (base.CheckLose())
+                LevelManager.GoTo(LevelManager.GameOverLose);
 
             // kolizje, poruszanie obiektami
             base.Update();

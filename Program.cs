@@ -16,9 +16,9 @@ namespace RexMinus1
         private static void Main(string[] args)
         {
             // cachowanie efektów dźwiękowych
-            AudioPlaybackEngine.Instance.AddCachedSound("beep1", "Assets/sound_beep_1.wav");
-            AudioPlaybackEngine.Instance.AddCachedSound("beep2", "Assets/sound_beep_2.wav");
-            AudioPlaybackEngine.Instance.AddCachedSound("beep3", "Assets/sound_beep_3.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound("beep_1", "Assets/sound_beep_1.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound("beep_2", "Assets/sound_beep_2.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound("beep_3", "Assets/sound_beep_3.wav");
 
             AudioPlaybackEngine.Instance.AddCachedSound("beep_danger", "Assets/sound_beep_danger.wav");
             AudioPlaybackEngine.Instance.AddCachedSound("beep_error", "Assets/sound_beep_error.wav");

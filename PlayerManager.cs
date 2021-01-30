@@ -9,7 +9,7 @@
         /// <summary>
         /// From 0.0 to 1.0
         /// </summary>
-        public float Shields { get; internal set; }
+        public float Shield { get; internal set; }
 
         /// <summary>
         /// From 0.0 to 1.0
