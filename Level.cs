@@ -1,5 +1,6 @@
 ﻿using ConsoleGameEngine;
 using RexMinus1.GameObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -62,6 +63,34 @@ namespace RexMinus1
             Engine.WriteText(new Point(7, 32), speed.ToString("F2"), 2);
         }
 
+        public void DrawCompassBar()
+        {
+            if (models.Count == 0)
+                return;
+
+            foreach (var item in models.OfType<ICollision>().Where(x => x.IsDetected))
+            {
+                var m = item as Model;
+
+                var angle2 = CustomMath.ConvertRadiansToDegrees(CustomMath.SimpleAngleBetweenTwoVectors(ModelRenderer.CameraForward, m.Position - ModelRenderer.CameraPosition));
+                var compass_position = (angle2 / 180 * 64) + 64;
+
+                var distance = Math.Abs(Vector3.Dot(ModelRenderer.CameraPosition, m.Position));
+                if (distance > 999)
+                    distance = 999;
+
+                int color = 14;
+                if (item is Enemy && (item as Enemy).IsIdentified)
+                    color = 12;
+
+                if (item is Astronaut && item.IsIdentified)
+                    color = 10;
+
+                Engine.WriteText(new Point((int)compass_position, 2), "X", color);
+                Engine.WriteText(new Point((int)compass_position - 1, 3), distance.ToString("000"), color);
+            }
+        }
+
         public void DrawBar(Point origin, int size, float value, int color)
         {
             int end = (int)(size * value);
@@ -105,10 +134,20 @@ namespace RexMinus1
             // uruchamiania efektów kolizji gracza ze wszystkimi obiektami
             foreach (var item in models.OfType<ICollision>())
             {
-                if (item.Collision(ModelRenderer.CameraPosition))
+                if (item.Collision(ModelRenderer.CameraPosition) < item.CollisionRange)
                 {
                     PlayerManager.Instance.Energy -= item.CollisionAttack;
                     PlayerManager.Instance.Shield -= item.CollisionAttack;
+                }
+
+                if (item.Collision(ModelRenderer.CameraPosition) < item.DetectionRange)
+                {
+                    item.IsDetected = true;
+                }
+
+                if (item.Collision(ModelRenderer.CameraPosition) < item.IdentificationRange)
+                {
+                    item.IsIdentified = true;
                 }
             }
         }

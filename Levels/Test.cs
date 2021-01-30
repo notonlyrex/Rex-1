@@ -10,32 +10,6 @@ namespace RexMinus1.Levels
     {
         private Animations.Laser laser;
 
-        private void DrawCompassBar()
-        {
-            if (models.Count == 0)
-                return;
-
-            foreach (var item in models)
-            {
-                var angle2 = CustomMath.ConvertRadiansToDegrees(CustomMath.SimpleAngleBetweenTwoVectors(ModelRenderer.CameraForward, item.Position - ModelRenderer.CameraPosition));
-                var compass_position = (angle2 / 180 * 64) + 64;
-
-                var distance = Math.Abs(Vector3.Dot(ModelRenderer.CameraPosition, item.Position));
-                if (distance > 999)
-                    distance = 999;
-
-                int color = 14;
-                if (item.GetType() == typeof(Enemy) && (item as Enemy).IsIdentified)
-                    color = 12;
-
-                if (item.GetType() == typeof(Astronaut))
-                    color = 10;
-
-                Engine.WriteText(new Point((int)compass_position, 2), "X", color);
-                Engine.WriteText(new Point((int)compass_position - 1, 3), distance.ToString("000"), color);
-            }
-        }
-
         public override void Start()
         {
             if (PlayerManager.Instance.IsMusicEnabled)

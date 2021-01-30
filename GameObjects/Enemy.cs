@@ -11,12 +11,20 @@ namespace RexMinus1.GameObjects
         public float Shield { get; set; }
 
         public float CollisionAttack { get; set; }
+        public float CollisionRange { get; set; }
+        public float DetectionRange { get; set; }
+
+        public float IdentificationRange { get; set; }
 
         public bool IsIdentified { get; set; } = false;
 
-        public virtual bool Collision(Vector3 player)
+        public bool IsVisible { get; set; } = true;
+
+        public bool IsDetected { get; set; } = false;
+
+        public virtual float Collision(Vector3 player)
         {
-            return Math.Abs(Vector3.Dot(player, Position)) < 10;
+            return Math.Abs(Vector3.Dot(player, Position));
         }
 
         public virtual void Hit(Vector3 player)

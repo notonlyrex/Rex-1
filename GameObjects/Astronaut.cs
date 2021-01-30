@@ -9,18 +9,24 @@ namespace RexMinus1.GameObjects
         public bool IsCollected { get; set; }
 
         public float CollisionAttack { get; set; } = 0;
+        public float CollisionRange { get; set; } = 5;
+        public float DetectionRange { get; set; } = 50;
+        public float IdentificationRange { get; set; } = 10;
+        public bool IsVisible { get; set; } = true;
+        public bool IsIdentified { get; set; } = false;
+        public bool IsDetected { get; set; } = false;
 
-        public bool Collision(Vector3 player)
+        public float Collision(Vector3 player)
         {
-            if (Math.Abs(Vector3.Dot(player, this.Position)) < 10)
+            var d = Math.Abs(Vector3.Dot(player, this.Position));
+
+            if (d < CollisionRange)
             {
                 AudioPlaybackEngine.Instance.PlayCachedSound("beep_3");
                 IsCollected = true;
-
-                return true;
             }
 
-            return false;
+            return d;
         }
     }
 }

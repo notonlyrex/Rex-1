@@ -10,20 +10,24 @@ namespace RexMinus1.GameObjects
             Mesh = Mesh.LoadFromObj("Assets/obj_mine.obj");
             Shield = 0.2f;
             CollisionAttack = 0.3f;
+
+            CollisionRange = 10;
+            DetectionRange = 100;
+            IdentificationRange = 20;
+            IsVisible = true;
         }
 
-        public override bool Collision(Vector3 player)
+        public override float Collision(Vector3 player)
         {
-            if (base.Collision(player))
+            var d = base.Collision(player);
+
+            if (d < CollisionRange)
             {
                 AudioPlaybackEngine.Instance.PlayCachedSound("boom");
                 Shield = 0;
-                return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return d;
         }
 
         public override void Move()
