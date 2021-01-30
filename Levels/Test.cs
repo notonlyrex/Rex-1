@@ -27,6 +27,8 @@ namespace RexMinus1.Levels
             models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/test5.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
             test = Sprite.FromFile("Assets/mood-kid.png");
 
+            AudioPlaybackEngine.Instance.PlayMusic("Assets/odyssey.ogg");
+
             base.Create();
         }
 

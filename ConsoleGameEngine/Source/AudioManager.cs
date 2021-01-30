@@ -13,6 +13,12 @@ namespace ConsoleGameEngine
         private readonly IWavePlayer outputDevice;
         private readonly MixingSampleProvider mixer;
 
+        public float Volume
+        {
+            get { return outputDevice.Volume; }
+            set { outputDevice.Volume = value; }
+        }
+
         public AudioPlaybackEngine(int sampleRate = 44100, int channelCount = 2)
         {
             outputDevice = new WaveOutEvent();
@@ -26,6 +32,13 @@ namespace ConsoleGameEngine
         {
             var input = new AudioFileReader(fileName);
             AddMixerInput(new AutoDisposeFileReader(input));
+        }
+
+        public void PlayMusic(string fileName)
+        {
+            var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(fileName);
+
+            mixer.AddMixerInput((IWaveProvider)vorbisStream);
         }
 
         private ISampleProvider ConvertToRightChannelCount(ISampleProvider input)
