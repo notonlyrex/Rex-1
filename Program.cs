@@ -23,8 +23,14 @@ namespace RexMinus1
             // parametry wyświetlania
             new RexMinus1().Construct(128, 64, 8, 8, FramerateMode.MaxFps);
 
+            Exit();
+        }
+
+        private static void Exit()
+        {
             // zwalnianie podsystemu audio
             AudioPlaybackEngine.Instance.Dispose();
+            Environment.Exit(0);
         }
 
         // na początku działania gry
@@ -46,6 +52,9 @@ namespace RexMinus1
             levelManager.Add(new Levels.Intro());
             levelManager.Add(new Levels.Test());
 
+            // inicjalizacja podstawowych elementow
+            PlayerManager.Instance.IsMusicEnabled = false;
+
             // inicjalizacja podstawowych rzeczy w poziomach
             // i ladowanie do pamięci wszystkiego
             levelManager.Initialize(Engine, modelRenderer, spriteRenderer, animationRenderer);
@@ -58,6 +67,9 @@ namespace RexMinus1
 
             if (Engine.GetKeyDown(ConsoleKey.F1))
                 drawDebug = !drawDebug;
+
+            if (Engine.GetKeyDown(ConsoleKey.Escape))
+                Exit();
         }
 
         // co każdą klatkę - tutaj rendering

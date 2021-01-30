@@ -20,6 +20,8 @@ namespace ConsoleGameEngine
             {
                 RenderSingle(origin, sprite);
             }
+
+            Batch.Clear();
         }
 
         public void RenderSingle(Point origin, Sprite s)

@@ -6,7 +6,7 @@ namespace RexMinus1.Levels
 {
     internal class Test : Level
     {
-        private Sprite hud;
+        
 
         private void DrawCompassBar()
         {
@@ -20,16 +20,12 @@ namespace RexMinus1.Levels
             var compass_position_test = (angle2 / 180 * 64) + 64;
 
             Engine.WriteText(new Point((int)compass_position_test, 2), "X", 14);
-        }
-
-        private void DrawHud()
-        {
-            SpriteRenderer.RenderSingle(new Point(0, 0), hud);
-        }
+        }        
 
         public override void Start()
         {
-            AudioPlaybackEngine.Instance.PlayMusic("Assets/odyssey.ogg");
+            if (PlayerManager.Instance.IsMusicEnabled)
+                AudioPlaybackEngine.Instance.PlayMusic("Assets/odyssey.ogg");
 
             base.Start();
         }
@@ -37,7 +33,7 @@ namespace RexMinus1.Levels
         public override void Create()
         {
             models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/test5.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
-            hud = Sprite.FromFile("Assets/hud.png");
+            
 
             base.Create();
         }
@@ -108,6 +104,7 @@ namespace RexMinus1.Levels
 
             base.Render();
 
+            DrawCompassBar();
             DrawHud();
         }
     }

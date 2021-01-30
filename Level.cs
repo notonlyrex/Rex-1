@@ -8,6 +8,11 @@ namespace RexMinus1
     {
         protected List<Model> models = new List<Model>();
 
+        private Sprite hud;
+        private Sprite hud_left;
+        private Sprite hud_middle;
+        private Sprite hud_right;
+
         public ModelRenderer ModelRenderer { get; set; }
 
         public ConsoleEngine Engine { get; set; }
@@ -31,6 +36,28 @@ namespace RexMinus1
             Engine.WriteText(new Point(0, 10), "R: " + ModelRenderer.CameraRight.X + " " + ModelRenderer.CameraRight.Y + " " + ModelRenderer.CameraRight.Z, 14);
         }
 
+        public void DrawHud()
+        {
+            SpriteRenderer.RenderSingle(new Point(0, 0), hud);
+            SpriteRenderer.RenderSingle(new Point(12, 59), hud_left);
+            SpriteRenderer.RenderSingle(new Point(47, 59), hud_middle);
+            SpriteRenderer.RenderSingle(new Point(83, 59), hud_right);
+
+            DrawBar(new Point(13, 59), 31, PlayerManager.Instance.Shields, 4);
+            DrawBar(new Point(48, 59), 31, PlayerManager.Instance.Energy, 4);
+            DrawBar(new Point(83, 59), 31, PlayerManager.Instance.Heat, 4);
+
+            Engine.WriteText(new Point(24, 60), "  SHIELD  ", 1);
+            Engine.WriteText(new Point(59, 60), "  ENERGY  ", 1);
+            Engine.WriteText(new Point(94, 60), "   HEAT   ", 1);
+        }
+
+        public void DrawBar(Point origin, int size, float value, int color)
+        {
+            int end = (int)(size * value);
+            Engine.Line(origin, new Point(origin.X + end, origin.Y), color);
+        }
+
         protected void PlayAnimation(Animation anim)
         {
             AnimationRenderer.Add(anim);
@@ -44,6 +71,11 @@ namespace RexMinus1
         public virtual void Create()
         {
             ModelRenderer.UpdateCameraRotation(0.0f);
+
+            hud = Sprite.FromFile("Assets/hud.png");
+            hud_left = Sprite.FromFile("Assets/hud_bottom_bar_left.png");
+            hud_middle = Sprite.FromFile("Assets/hud_bottom_bar_middle.png");
+            hud_right = Sprite.FromFile("Assets/hud_bottom_bar_right.png");
         }
 
         public virtual void Update()

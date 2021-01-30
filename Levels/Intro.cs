@@ -20,6 +20,10 @@ namespace RexMinus1.Levels
 
             PlayAnimation(anim);
 
+            PlayerManager.Instance.Shields = 1;
+            PlayerManager.Instance.Energy = 1;
+            PlayerManager.Instance.Heat = 0;
+
             base.Create();
         }
 
