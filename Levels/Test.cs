@@ -1,13 +1,20 @@
 ﻿using ConsoleGameEngine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace RexMinus1.Levels
 {
     internal class Test : Level
     {
+        private Laser laser;
+
         private void DrawCompassBar()
         {
+            if (models.Count == 0)
+                return;
+
             var angle2 = CustomMath.ConvertRadiansToDegrees(CustomMath.SimpleAngleBetweenTwoVectors(ModelRenderer.CameraForward, models[0].Position - ModelRenderer.CameraPosition));
 
             //angle2 = angle2 * (-1) ;
@@ -32,7 +39,9 @@ namespace RexMinus1.Levels
 
         public override void Create()
         {
-            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
+            models.Add(new Enemy { Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f, Shield = 1f });
+
+            laser = new Laser();
 
             base.Create();
         }
@@ -57,12 +66,14 @@ namespace RexMinus1.Levels
             {
                 speed += 0.05f;
                 PlayerManager.Instance.Energy -= 0.01f;
+                PlayerManager.Instance.Heat += 0.1f;
             }
 
             if (Engine.GetKeyDown(ConsoleKey.DownArrow) || Engine.GetKeyDown(ConsoleKey.S))
             {
                 speed -= 0.04f;
                 PlayerManager.Instance.Energy -= 0.01f;
+                PlayerManager.Instance.Heat += 0.1f;
             }
 
             if (Engine.GetKeyDown(ConsoleKey.Q))
@@ -90,13 +101,39 @@ namespace RexMinus1.Levels
                 LevelManager.GoTo(0);
             }
 
+            if (PlayerManager.Instance.Heat > 0)
+                PlayerManager.Instance.Heat -= 0.01f;
+
+            if (PlayerManager.Instance.Energy < 1)
+                PlayerManager.Instance.Energy += 0.01f;
+
             if (PlayerManager.Instance.Energy <= 0.05)
+                LevelManager.GoTo(0); // gameover
+
+            if (PlayerManager.Instance.Heat >= 0.95)
                 LevelManager.GoTo(0); // gameover
 
             ModelRenderer.UpdateCameraMovement(speed, 0.0f);
 
             if (Engine.GetKeyDown(ConsoleKey.U))
-                AudioPlaybackEngine.Instance.PlayCachedSound("beep1");
+            {
+                laser.Reset();
+                laser.IsPaused = false;
+                PlayAnimation(laser);
+                AudioPlaybackEngine.Instance.PlayCachedSound("shoot_laser");
+
+                PlayerManager.Instance.Energy -= 0.1f;
+                PlayerManager.Instance.Heat += 0.1f;
+
+                var killed = new List<Model>();
+
+                foreach (var enemy in models.OfType<Enemy>())
+                {
+                    enemy.Hit(ModelRenderer.CameraPosition);
+                }
+
+                models.RemoveAll(x => x.GetType() == typeof(Enemy) && (x as Enemy).Shield <= 0);
+            }
 
             if (Engine.GetKeyDown(ConsoleKey.I))
                 AudioPlaybackEngine.Instance.PlayCachedSound("boom");

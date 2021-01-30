@@ -27,7 +27,7 @@ namespace RexMinus1.Levels
         {
             models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/obj_mine.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
 
-            timer = new Timer { Span = TimeSpan.FromSeconds(5) };
+            timer = new Timer { Span = TimeSpan.FromSeconds(1) };
 
             anim = new HorizontalTextAnimation() { Text = "Hello, world!", Origin = new Point(10, 20), Color = 7, Speed = 1 };
             anim.IsPaused = false;

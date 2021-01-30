@@ -68,6 +68,7 @@ namespace RexMinus1
 
         protected void PlayAnimation(Animation anim)
         {
+            anim.IsPaused = false;
             AnimationRenderer.Add(anim);
         }
 
