@@ -18,7 +18,7 @@ namespace RexMinus1
         public void GoTo(int level)
         {
             currentLevel += level;
-            CurrentLevel.AnimationRenderer.Clear();
+            CurrentLevel.Start();
         }
 
         public void Initialize(ConsoleEngine engine, ModelRenderer modelRenderer, SpriteRenderer spriteRenderer, AnimationRenderer animationRenderer)

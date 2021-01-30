@@ -1,4 +1,5 @@
 ﻿using ConsoleGameEngine;
+using System;
 
 namespace RexMinus1
 {
@@ -10,19 +11,19 @@ namespace RexMinus1
         private LevelManager levelManager;
         private AnimationRenderer animationRenderer;
 
-        private bool drawDebug = true;
+        private bool drawDebug = false;
 
         private static void Main(string[] args)
         {
-            // later in the app...
+            // cachowanie efektów dźwiękowych
             AudioPlaybackEngine.Instance.AddCachedSound("zap", "Assets/coin.wav");
             AudioPlaybackEngine.Instance.AddCachedSound("boom", "Assets/collect.wav");
-
-            // on shutdown
+            AudioPlaybackEngine.Instance.Volume = 0.01f;
 
             // parametry wyświetlania
             new RexMinus1().Construct(128, 64, 8, 8, FramerateMode.MaxFps);
 
+            // zwalnianie podsystemu audio
             AudioPlaybackEngine.Instance.Dispose();
         }
 
@@ -55,7 +56,7 @@ namespace RexMinus1
         {
             levelManager.CurrentLevel.Update();
 
-            if (Engine.GetKeyDown(System.ConsoleKey.F1))
+            if (Engine.GetKeyDown(ConsoleKey.F1))
                 drawDebug = !drawDebug;
         }
 

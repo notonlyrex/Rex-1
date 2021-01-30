@@ -26,7 +26,9 @@ namespace RexMinus1.Levels
         public override void Update()
         {
             if (timer.Elapsed)
+            {
                 LevelManager.GoTo(1);
+            }
 
             base.Update();
         }

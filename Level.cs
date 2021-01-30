@@ -36,6 +36,11 @@ namespace RexMinus1
             AnimationRenderer.Add(anim);
         }
 
+        public virtual void Start()
+        {
+            AnimationRenderer.Clear();
+        }
+
         public virtual void Create()
         {
             ModelRenderer.UpdateCameraRotation(0.0f);

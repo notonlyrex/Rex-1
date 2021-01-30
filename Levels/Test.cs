@@ -27,12 +27,17 @@ namespace RexMinus1.Levels
             SpriteRenderer.RenderSingle(new Point(0, 0), hud);
         }
 
+        public override void Start()
+        {
+            AudioPlaybackEngine.Instance.PlayMusic("Assets/odyssey.ogg");
+
+            base.Start();
+        }
+
         public override void Create()
         {
             models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/test5.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
             hud = Sprite.FromFile("Assets/hud.png");
-
-            //AudioPlaybackEngine.Instance.PlayMusic("Assets/odyssey.ogg");
 
             base.Create();
         }
