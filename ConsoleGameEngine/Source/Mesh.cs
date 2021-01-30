@@ -64,7 +64,7 @@ namespace ConsoleGameEngine
             {
                 string line = s.ReadLine();
 
-                if (line[0] == 'v')
+                if (line.StartsWith('v') && !line.StartsWith("vt"))
                 {
                     Vector3 v = new Vector3();
                     string[] str = line.Replace('.', ',').Split();
@@ -158,6 +158,7 @@ namespace ConsoleGameEngine
             mat.m[3, 0] = 1.0f; mat.m[3, 1] = 1.0f; mat.m[3, 2] = 1.0f; mat.m[3, 3] = 1.0f;
             return mat;
         }
+
         /// <summary>
         ///  LookAtLH
         /// </summary>
@@ -169,19 +170,19 @@ namespace ConsoleGameEngine
         {
             Vector3 xaxis, yaxis, zaxis;
 
-            zaxis = Vector3.Subtract(target, eye); 
+            zaxis = Vector3.Subtract(target, eye);
             zaxis = Vector3.Normalize(zaxis);
 
-            xaxis = Vector3.Cross(up, zaxis); 
+            xaxis = Vector3.Cross(up, zaxis);
             xaxis = Vector3.Normalize(xaxis);
 
             yaxis = Vector3.Cross(zaxis, xaxis);
 
             Matrix result = Matrix.Identity();
 
-            result.m[0, 0] = xaxis.X; result.m[1, 0] = xaxis.Y; result.m[2, 0] = xaxis.Z; 
-            result.m[0, 1] = yaxis.X; result.m[1, 1] = yaxis.Y; result.m[2, 1] = yaxis.Z; 
-            result.m[0, 2] = zaxis.X; result.m[1, 2] = zaxis.Y; result.m[2, 2] = zaxis.Z; 
+            result.m[0, 0] = xaxis.X; result.m[1, 0] = xaxis.Y; result.m[2, 0] = xaxis.Z;
+            result.m[0, 1] = yaxis.X; result.m[1, 1] = yaxis.Y; result.m[2, 1] = yaxis.Z;
+            result.m[0, 2] = zaxis.X; result.m[1, 2] = zaxis.Y; result.m[2, 2] = zaxis.Z;
 
             //result.m[0, 3] = 0.0f;
             //result.m[1, 3] = 0.0f;

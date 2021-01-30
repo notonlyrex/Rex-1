@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
 
 namespace ConsoleGameEngine
@@ -28,7 +27,6 @@ namespace ConsoleGameEngine
             aspectRatio = (float)consoleHeight / (float)consoleWidth;
 
             projectionMatrix = Matrix.ProjectionMatrix(fov, aspectRatio, near, far);
-
         }
 
         private readonly int consoleHeight;
@@ -36,7 +34,7 @@ namespace ConsoleGameEngine
         private readonly float aspectRatio;
 
         public Vector3 CameraPosition { get; set; }
-        
+
         public Vector3 CameraForward { get; set; }
         public Vector3 CameraLeft { get; set; }
         public Vector3 CameraRight { get; set; }
@@ -56,7 +54,7 @@ namespace ConsoleGameEngine
         private Matrix projectionMatrix;
         private Matrix viewMatrix;
 
-        public void UpdateCameraRotation (float r)
+        public void UpdateCameraRotation(float r)
         {
             CameraRotation += r;
 
@@ -65,7 +63,6 @@ namespace ConsoleGameEngine
             CameraRight = CustomMath.SimpleRotateVectorByDegree(CameraForward, -90);
 
             projectionMatrix *= Matrix.RotationMatrixY(r);
-
         }
 
         public void UpdateCameraMovement(float mov_forward, float mov_pane)
@@ -75,12 +72,8 @@ namespace ConsoleGameEngine
 
         public void UpdateViewMatrix()
         {
-           
             viewMatrix = Matrix.LookAtLH(CameraPosition, CameraForward, Vector3.UnitY);
             viewMatrix *= Matrix.RotationMatrixY(CameraRotation);
-
-            
-
         }
 
         public void UpdateFOV(float f)
@@ -89,8 +82,7 @@ namespace ConsoleGameEngine
             projectionMatrix = Matrix.ProjectionMatrix(fov, aspectRatio, near, far);
         }
 
-
-            public void UpdateVisibleFaces(List<Model> batch)
+        public void UpdateVisibleFaces(List<Model> batch)
         {
             foreach (var model in batch)
             {
@@ -105,7 +97,7 @@ namespace ConsoleGameEngine
                 var transformMatrix = modelMatrix * viewMatrix * projectionMatrix;
 
                 for (int i = 0; i < mesh.Triangles.Length; i++)
-                {   
+                {
                     Triangle tri = mesh.Triangles[i];
                     Triangle transformed = tri.MatMul(transformMatrix);
 
@@ -131,7 +123,7 @@ namespace ConsoleGameEngine
                         projected.p[0].X *= 0.5f * consoleWidth; projected.p[0].Y *= 0.5f * consoleHeight;
                         projected.p[1].X *= 0.5f * consoleWidth; projected.p[1].Y *= 0.5f * consoleHeight;
                         projected.p[2].X *= 0.5f * consoleWidth; projected.p[2].Y *= 0.5f * consoleHeight;
-                        
+
                         float l = Vector3.Dot(lightDirection, normal);
                         ConsoleCharacter character;
                         if (l > 1) character = ConsoleCharacter.Full;
@@ -142,7 +134,6 @@ namespace ConsoleGameEngine
 
                         trianglesToRaster.Add(projected);
                     }
-
                 }
             }
 

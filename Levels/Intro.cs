@@ -16,9 +16,9 @@ namespace RexMinus1.Levels
 
         public override void Create()
         {
-            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
+            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
 
-            timer = new Timer { Span = TimeSpan.FromSeconds(2) };
+            timer = new Timer { Span = TimeSpan.FromSeconds(5) };
 
             anim = new HorizontalTextAnimation() { Text = "Hello, world!", Origin = new Point(10, 20), Color = 7, Speed = 1 };
             anim.IsPaused = false;
@@ -34,6 +34,8 @@ namespace RexMinus1.Levels
 
         public override void Update()
         {
+            models[0].RotationY += 0.05f;
+
             if (timer.Elapsed)
             {
                 LevelManager.GoTo(1);
