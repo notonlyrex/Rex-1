@@ -29,7 +29,7 @@ namespace ConsoleGameEngine
                 for (int j = 0; j < s.Glyphs.GetLength(1); j++)
                 {
                     if (s.Glyphs[i, j] != null)
-                        engine.SetPixel(new Point(origin.X + i, origin.Y + j), 4, s.Glyphs[i, j].c);
+                        engine.SetPixel(new Point(origin.X + i, origin.Y + j), s.Glyphs[i, j].fg, s.Glyphs[i, j].c);
                 }
             }
         }

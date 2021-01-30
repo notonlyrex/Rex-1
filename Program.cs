@@ -10,6 +10,8 @@ namespace RexMinus1
         private LevelManager levelManager;
         private AnimationRenderer animationRenderer;
 
+        private bool drawDebug = true;
+
         private static void Main(string[] args)
         {
             // later in the app...
@@ -52,6 +54,9 @@ namespace RexMinus1
         public override void Update()
         {
             levelManager.CurrentLevel.Update();
+
+            if (Engine.GetKeyDown(System.ConsoleKey.F1))
+                drawDebug = !drawDebug;
         }
 
         // co każdą klatkę - tutaj rendering
@@ -63,7 +68,8 @@ namespace RexMinus1
             levelManager.CurrentLevel.Render();
 
             // DEBUG RENDER
-            levelManager.CurrentLevel.DrawDebug();
+            if (drawDebug)
+                levelManager.CurrentLevel.DrawDebug();
 
             Engine.DisplayBuffer();
         }
