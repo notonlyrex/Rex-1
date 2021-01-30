@@ -16,10 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets/Rock2.obj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\mood-kid.png">
+    <None Update="Assets/*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>    
   </ItemGroup>
