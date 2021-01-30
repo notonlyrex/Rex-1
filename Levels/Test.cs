@@ -1,4 +1,5 @@
 ﻿using ConsoleGameEngine;
+using RexMinus1.GameObjects;
 using System;
 using System.Linq;
 using System.Numerics;
@@ -7,7 +8,7 @@ namespace RexMinus1.Levels
 {
     internal class Test : Level
     {
-        private Laser laser;
+        private Animations.Laser laser;
 
         private void DrawCompassBar()
         {
@@ -63,18 +64,13 @@ namespace RexMinus1.Levels
                 Position = new Vector3(15, 0, 3),
             });
 
-            laser = new Laser();
+            laser = new Animations.Laser();
 
             base.Create();
         }
 
         public override void Update()
         {
-            // aktualizacja pozycji obiektów
-            //models[0].RotationY += 0.05f;
-            //models[1].RotationY += 0.1f;
-            //models[2].RotationY += 0.1f;
-
             // zmiana pozycji gracza
             if (Engine.GetKeyDown(ConsoleKey.LeftArrow) || Engine.GetKeyDown(ConsoleKey.A))
             {
@@ -137,6 +133,7 @@ namespace RexMinus1.Levels
                 PlayAnimation(laser);
                 AudioPlaybackEngine.Instance.PlayCachedSound("shoot_laser");
 
+                // aktualizacja energii
                 PlayerManager.Instance.Energy -= 0.1f;
                 PlayerManager.Instance.Heat += 0.1f;
 
@@ -147,36 +144,11 @@ namespace RexMinus1.Levels
                 }
             }
 
-            // uruchamiania efektów kolizji gracza ze wszystkimi obiektami
-            foreach (var item in models.OfType<ICollision>())
-            {
-                item.Collision(ModelRenderer.CameraPosition);
-            }
+            // sprawdzenie warunków zwycięstwa i przegranej
+            base.CheckWin();
+            base.CheckLose();
 
-            // usuwanie zniszczonych wrogów
-            models.RemoveAll(x => x.GetType() == typeof(Enemy) && (x as Enemy).Shield <= 0);
-
-            // usuwanie zebranych astronautów
-            models.RemoveAll(x => x.GetType() == typeof(Astronaut) && (x as Astronaut).IsCollected);
-
-            // sprawdzenie warunku zwycięstwa
-            if (models.OfType<Astronaut>().Count() == 0)
-                LevelManager.GoTo(LevelManager.GameOverWin);
-
-            // aktualizacja ciepła i energii
-            if (PlayerManager.Instance.Heat > 0)
-                PlayerManager.Instance.Heat -= 0.01f;
-
-            if (PlayerManager.Instance.Energy < 1)
-                PlayerManager.Instance.Energy += 0.01f;
-
-            // sprawdzenie warunków przegranej
-            if (PlayerManager.Instance.Energy <= 0.05)
-                LevelManager.GoTo(0);
-
-            if (PlayerManager.Instance.Heat >= 0.95)
-                LevelManager.GoTo(0);
-
+            // kolizje, poruszanie obiektami
             base.Update();
         }
 

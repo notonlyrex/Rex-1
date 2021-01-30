@@ -2,9 +2,9 @@
 using System;
 using System.Numerics;
 
-namespace RexMinus1
+namespace RexMinus1.GameObjects
 {
-    public class Enemy : Model
+    public class Enemy : Model, IMoveable
     {
         private DateTime lastHit = DateTime.Parse("1970-01-01");
 
@@ -19,6 +19,10 @@ namespace RexMinus1
                 Shield -= 0.5f;
                 lastHit = DateTime.Now;
             }
+        }
+
+        public void Move()
+        {
         }
     }
 }

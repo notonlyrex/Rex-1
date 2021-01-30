@@ -1,5 +1,7 @@
 ﻿using ConsoleGameEngine;
+using RexMinus1.GameObjects;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace RexMinus1
@@ -87,8 +89,68 @@ namespace RexMinus1
             hud_right = Sprite.FromFile("Assets/hud_bottom_bar_right.png");
         }
 
+        public virtual void MoveObjects()
+        {
+            // aktualizacja pozycji obiektów
+            foreach (var item in models.OfType<IMoveable>())
+            {
+                item.Move();
+            }
+        }
+
+        public virtual void CheckCollisions()
+        {
+            // uruchamiania efektów kolizji gracza ze wszystkimi obiektami
+            foreach (var item in models.OfType<ICollision>())
+            {
+                item.Collision(ModelRenderer.CameraPosition);
+            }
+        }
+
+        public virtual void RemoveObjects()
+        {
+            // usuwanie zniszczonych wrogów
+            models.RemoveAll(x => x.GetType() == typeof(Enemy) && (x as Enemy).Shield <= 0);
+
+            // usuwanie zebranych astronautów
+            models.RemoveAll(x => x.GetType() == typeof(Astronaut) && (x as Astronaut).IsCollected);
+        }
+
+        public virtual void CheckWin()
+        {
+            // sprawdzenie warunku zwycięstwa
+            if (models.OfType<Astronaut>().Count() == 0)
+                LevelManager.GoTo(LevelManager.GameOverWin);
+        }
+
+        public virtual void UpdateHeatEnergy()
+        {
+            // aktualizacja ciepła i energii
+            if (PlayerManager.Instance.Heat > 0)
+                PlayerManager.Instance.Heat -= 0.01f;
+
+            if (PlayerManager.Instance.Energy < 1)
+                PlayerManager.Instance.Energy += 0.01f;
+        }
+
+        public virtual void CheckLose()
+        {
+            // sprawdzenie warunków przegranej
+            if (PlayerManager.Instance.Energy <= 0.05)
+                LevelManager.GoTo(LevelManager.GameOverLose);
+
+            if (PlayerManager.Instance.Heat >= 0.95)
+                LevelManager.GoTo(LevelManager.GameOverLose);
+        }
+
         public virtual void Update()
         {
+            MoveObjects();
+            CheckCollisions();
+            RemoveObjects();
+
+            UpdateHeatEnergy();
+
             ModelRenderer.UpdateViewMatrix();
             ModelRenderer.UpdateVisibleFaces(models);
         }

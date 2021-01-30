@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace RexMinus1
+namespace RexMinus1.GameObjects
 {
     public interface ICollision
     {

@@ -1,6 +1,6 @@
 ﻿using ConsoleGameEngine;
 
-namespace RexMinus1
+namespace RexMinus1.Animations
 {
     internal class Laser : Animation
     {
