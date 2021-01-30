@@ -32,7 +32,7 @@ namespace RexMinus1.Levels
 
         public override void Create()
         {
-            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/test5.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
+            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
 
             base.Create();
         }
@@ -55,12 +55,14 @@ namespace RexMinus1.Levels
 
             if (Engine.GetKeyDown(ConsoleKey.UpArrow) || Engine.GetKeyDown(ConsoleKey.W))
             {
-                ModelRenderer.UpdateCameraMovement(0.1f, 0.0f);
+                speed += 0.05f;
+                PlayerManager.Instance.Energy -= 0.01f;
             }
 
             if (Engine.GetKeyDown(ConsoleKey.DownArrow) || Engine.GetKeyDown(ConsoleKey.S))
             {
-                ModelRenderer.UpdateCameraMovement(-0.1f, 0.0f);
+                speed -= 0.04f;
+                PlayerManager.Instance.Energy -= 0.01f;
             }
 
             if (Engine.GetKeyDown(ConsoleKey.Q))
@@ -82,6 +84,16 @@ namespace RexMinus1.Levels
             {
                 ModelRenderer.UpdateFOV(-0.1f);
             }
+
+            if (Engine.GetKeyDown(ConsoleKey.F2))
+            {
+                LevelManager.GoTo(0);
+            }
+
+            if (PlayerManager.Instance.Energy <= 0.05)
+                LevelManager.GoTo(0); // gameover
+
+            ModelRenderer.UpdateCameraMovement(speed, 0.0f);
 
             if (Engine.GetKeyDown(ConsoleKey.U))
                 AudioPlaybackEngine.Instance.PlayCachedSound("beep1");

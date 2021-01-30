@@ -8,6 +8,8 @@
 
         public abstract void Render();
 
+        public abstract void Reset();
+
         public Animation()
         {
             IsPaused = false;

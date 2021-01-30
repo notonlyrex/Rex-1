@@ -17,7 +17,7 @@ namespace RexMinus1
 
         public void GoTo(int level)
         {
-            currentLevel += level;
+            currentLevel = level;
             CurrentLevel.Start();
         }
 

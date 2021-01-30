@@ -88,6 +88,7 @@ namespace RexMinus1
             // inicjalizacja podstawowych rzeczy w poziomach
             // i ladowanie do pamięci wszystkiego
             levelManager.Initialize(Engine, modelRenderer, spriteRenderer, animationRenderer);
+            levelManager.GoTo(0);
         }
 
         // co każdą klatkę - tutaj obliczenia

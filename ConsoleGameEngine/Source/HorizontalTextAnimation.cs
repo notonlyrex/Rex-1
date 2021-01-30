@@ -37,5 +37,11 @@
                 Engine.WriteText(Origin, Text, Color);
             }
         }
+
+        public override void Reset()
+        {
+            currentFrame = 0;
+            IsPaused = false;
+        }
     }
 }
