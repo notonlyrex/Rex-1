@@ -76,6 +76,9 @@ namespace RexMinus1.Levels
                 ModelRenderer.UpdateFOV(-0.1f);
             }
 
+            if (Engine.GetKeyDown(ConsoleKey.U))
+                AudioPlaybackEngine.Instance.PlayCachedSound("zap");
+
             base.Update();
         }
 

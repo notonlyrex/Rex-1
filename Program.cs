@@ -12,8 +12,16 @@ namespace RexMinus1
 
         private static void Main(string[] args)
         {
+            // later in the app...
+            AudioPlaybackEngine.Instance.AddCachedSound("zap", "Assets/coin.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound("boom", "Assets/collect.wav");
+
+            // on shutdown
+
             // parametry wyświetlania
             new RexMinus1().Construct(128, 64, 8, 8, FramerateMode.MaxFps);
+
+            AudioPlaybackEngine.Instance.Dispose();
         }
 
         // na początku działania gry
@@ -54,7 +62,7 @@ namespace RexMinus1
             // SCENE RENDER
             levelManager.CurrentLevel.Render();
 
-            // HUD RENDER
+            // DEBUG RENDER
             levelManager.CurrentLevel.DrawDebug();
 
             Engine.DisplayBuffer();
