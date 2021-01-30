@@ -6,12 +6,18 @@ namespace RexMinus1
 {
     public abstract class Level
     {
+        protected string ShieldText = "  SHIELD  ";
+        protected string EnergyText = "  ENERGY  ";
+        protected string HeatText = "   HEAT   ";
+
         protected List<Model> models = new List<Model>();
 
         private Sprite hud;
         private Sprite hud_left;
         private Sprite hud_middle;
         private Sprite hud_right;
+
+        protected float speed;
 
         public ModelRenderer ModelRenderer { get; set; }
 
@@ -47,9 +53,11 @@ namespace RexMinus1
             DrawBar(new Point(48, 59), 31, PlayerManager.Instance.Energy, 4);
             DrawBar(new Point(83, 59), 31, PlayerManager.Instance.Heat, 4);
 
-            Engine.WriteText(new Point(24, 60), "  SHIELD  ", 1);
-            Engine.WriteText(new Point(59, 60), "  ENERGY  ", 1);
-            Engine.WriteText(new Point(94, 60), "   HEAT   ", 1);
+            Engine.WriteText(new Point(24, 60), ShieldText, 2);
+            Engine.WriteText(new Point(59, 60), EnergyText, 2);
+            Engine.WriteText(new Point(94, 60), HeatText, 2);
+
+            Engine.WriteText(new Point(7, 32), speed.ToString("F2"), 2);
         }
 
         public void DrawBar(Point origin, int size, float value, int color)
