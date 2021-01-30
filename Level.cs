@@ -129,6 +129,8 @@ namespace RexMinus1
             }
         }
 
+        private DateTime lastProximityAlert = DateTime.MinValue;
+
         public virtual void CheckCollisions()
         {
             // uruchamiania efektów kolizji gracza ze wszystkimi obiektami
@@ -140,13 +142,33 @@ namespace RexMinus1
                     PlayerManager.Instance.Shield -= item.CollisionAttack;
                 }
 
-                if (item.Collision(ModelRenderer.CameraPosition) < item.DetectionRange)
+                if (item.Collision(ModelRenderer.CameraPosition) < item.CollisionRange * 3)
                 {
-                    item.IsDetected = true;
+                    if (DateTime.Now - lastProximityAlert > TimeSpan.FromMilliseconds(600))
+                    {
+                        AudioPlaybackEngine.Instance.PlayCachedSound("radar_close");
+                        lastProximityAlert = DateTime.Now;
+                    }
                 }
 
-                if (item.Collision(ModelRenderer.CameraPosition) < item.IdentificationRange)
+                if (!item.IsDetected && item.Collision(ModelRenderer.CameraPosition) < item.DetectionRange)
                 {
+                    item.IsDetected = true;
+                    AudioPlaybackEngine.Instance.PlayCachedSound("radar_far");
+                }
+
+                if (!item.IsIdentified && item.Collision(ModelRenderer.CameraPosition) < item.IdentificationRange)
+                {
+                    if (item is Enemy)
+                    {
+                        AudioPlaybackEngine.Instance.PlayCachedSound("radar_detection");
+                    }
+
+                    if (item is Astronaut)
+                    {
+                        AudioPlaybackEngine.Instance.PlayCachedSound("radar_detection_2");
+                    }
+
                     item.IsIdentified = true;
                 }
             }
