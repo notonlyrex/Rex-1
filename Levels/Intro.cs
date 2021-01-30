@@ -9,6 +9,11 @@ namespace RexMinus1.Levels
         private Timer timer;
         private HorizontalTextAnimation anim;
 
+        public override void Start()
+        {
+            base.Start();
+        }
+
         public override void Create()
         {
             models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/Rock2.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });

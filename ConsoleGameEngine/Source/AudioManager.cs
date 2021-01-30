@@ -6,6 +6,41 @@ using System.Linq;
 
 namespace ConsoleGameEngine
 {
+    public class MusicPlaybackEngine
+    {
+        private readonly IWavePlayer outputDevice;
+        private readonly MixingSampleProvider mixer;
+
+        public float Volume
+        {
+            get { return outputDevice.Volume; }
+            set { outputDevice.Volume = value; }
+        }
+
+        public MusicPlaybackEngine(int sampleRate = 44100, int channelCount = 2)
+        {
+            outputDevice = new WaveOutEvent();
+            mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channelCount));
+            mixer.ReadFully = true;
+            outputDevice.Init(mixer);
+            outputDevice.Play();
+        }
+
+        public void PlayMusic(string fileName)
+        {
+            var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(fileName);
+
+            mixer.AddMixerInput((IWaveProvider)vorbisStream);
+        }
+
+        public void Dispose()
+        {
+            outputDevice.Dispose();
+        }
+
+        public static readonly MusicPlaybackEngine Instance = new MusicPlaybackEngine(48000, 2);
+    }
+
     public class AudioPlaybackEngine : IDisposable
     {
         private Dictionary<string, CachedSound> cachedSounds = new Dictionary<string, CachedSound>();
@@ -34,13 +69,6 @@ namespace ConsoleGameEngine
             AddMixerInput(new AutoDisposeFileReader(input));
         }
 
-        public void PlayMusic(string fileName)
-        {
-            var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(fileName);
-
-            mixer.AddMixerInput((IWaveProvider)vorbisStream);
-        }
-
         private ISampleProvider ConvertToRightChannelCount(ISampleProvider input)
         {
             if (input.WaveFormat.Channels == mixer.WaveFormat.Channels)
@@ -66,12 +94,19 @@ namespace ConsoleGameEngine
 
         public void PlayCachedSound(string name)
         {
-            AddMixerInput(new CachedSoundSampleProvider(cachedSounds[name]));
+            PlaySound(cachedSounds[name]);
         }
 
         private void AddMixerInput(ISampleProvider input)
         {
-            mixer.AddMixerInput(ConvertToRightChannelCount(input));
+            try
+            {
+                mixer.AddMixerInput(ConvertToRightChannelCount(input));
+            }
+            catch (ArgumentException)
+            {
+                // COS TUTAJ JEST BARDZO NIE TAK, ALE NIE ROZUMIEM
+            }
         }
 
         public void Dispose()
@@ -79,7 +114,7 @@ namespace ConsoleGameEngine
             outputDevice.Dispose();
         }
 
-        public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(44100, 2);
+        public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(22050, 1);
     }
 
     public class CachedSound

@@ -6,8 +6,6 @@ namespace RexMinus1.Levels
 {
     internal class Test : Level
     {
-        
-
         private void DrawCompassBar()
         {
             var angle2 = CustomMath.ConvertRadiansToDegrees(CustomMath.SimpleAngleBetweenTwoVectors(ModelRenderer.CameraForward, models[0].Position - ModelRenderer.CameraPosition));
@@ -20,12 +18,14 @@ namespace RexMinus1.Levels
             var compass_position_test = (angle2 / 180 * 64) + 64;
 
             Engine.WriteText(new Point((int)compass_position_test, 2), "X", 14);
-        }        
+        }
 
         public override void Start()
         {
             if (PlayerManager.Instance.IsMusicEnabled)
-                AudioPlaybackEngine.Instance.PlayMusic("Assets/odyssey.ogg");
+                MusicPlaybackEngine.Instance.PlayMusic("Assets/song_main.ogg");
+
+            AudioPlaybackEngine.Instance.PlayCachedSound("startgame");
 
             base.Start();
         }
@@ -33,7 +33,6 @@ namespace RexMinus1.Levels
         public override void Create()
         {
             models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/test5.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
-            
 
             base.Create();
         }
@@ -85,7 +84,10 @@ namespace RexMinus1.Levels
             }
 
             if (Engine.GetKeyDown(ConsoleKey.U))
-                AudioPlaybackEngine.Instance.PlayCachedSound("zap");
+                AudioPlaybackEngine.Instance.PlayCachedSound("beep1");
+
+            if (Engine.GetKeyDown(ConsoleKey.I))
+                AudioPlaybackEngine.Instance.PlayCachedSound("boom");
 
             base.Update();
         }
