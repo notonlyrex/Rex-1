@@ -10,6 +10,8 @@ namespace RexMinus1
 
         public float Shield { get; set; }
 
+        public bool IsIdentified { get; set; } = false;
+
         public void Hit(Vector3 player)
         {
             if (Math.Abs(Vector3.Dot(player, this.Position)) < 12 && DateTime.Now - lastHit > TimeSpan.FromMilliseconds(1000))

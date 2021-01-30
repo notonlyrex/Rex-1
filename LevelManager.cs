@@ -8,6 +8,11 @@ namespace RexMinus1
         private List<Level> levels = new List<Level>();
         private int currentLevel = 0;
 
+        public int GameOverWin { get; set; }
+        public int GameOverLose { get; set; }
+        public int Menu { get; set; }
+        public int MainScreen { get; set; }
+
         public Level CurrentLevel => levels[currentLevel];
 
         public void Add(Level level)

@@ -82,6 +82,10 @@ namespace RexMinus1
             levelManager.Add(new Levels.Intro());
             levelManager.Add(new Levels.Test());
 
+            levelManager.GameOverLose = 0;
+            levelManager.GameOverWin = 0;
+            levelManager.MainScreen = 0;
+
             // inicjalizacja podstawowych elementow
             PlayerManager.Instance.IsMusicEnabled = false;
 
