@@ -37,6 +37,15 @@ namespace ConsoleGameEngine
             if (color.R == 90 && color.G == 90 && color.B == 44)
                 return 6;
 
+            if (color.R == 235 && color.G == 235 && color.B == 235)
+                return 15;
+
+            if (color.R == 249 && color.G == 248 && color.B == 248)
+                return 15;
+
+            if (color.R == 222 && color.G == 222 && color.B == 222)
+                return 7;
+
             return 13;
         }
 

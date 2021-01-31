@@ -94,9 +94,11 @@ namespace RexMinus1
             levelManager.Add(new Levels.Three());
             levelManager.Add(new Levels.Four());
             levelManager.Add(new Levels.Five());
+            levelManager.Add(new Levels.YouWin());
+            levelManager.Add(new Levels.YouLose());
 
-            levelManager.GameOverLose = 0;
-            levelManager.GameOverWin = 0;
+            levelManager.GameOverLose = 8;
+            levelManager.GameOverWin = 7;
             levelManager.Intro = 1;
             levelManager.Welcome = 0;
 
@@ -108,7 +110,7 @@ namespace RexMinus1
 #if !DEBUG
             levelManager.GoTo(levelManager.Welcome);
 #else
-            levelManager.GoTo(0);
+            levelManager.GoTo(8);
 #endif
         }
 
