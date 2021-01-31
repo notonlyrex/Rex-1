@@ -21,6 +21,8 @@ namespace RexMinus1
         private Sprite hud_right;
 
         protected float speed;
+        private BorderedTextAnimation proximity;
+        private BorderedTextAnimation overheat;
 
         public ModelRenderer ModelRenderer { get; set; }
 
@@ -61,6 +63,8 @@ namespace RexMinus1
             Engine.WriteText(new Point(94, 60), HeatText, 2);
 
             Engine.WriteText(new Point(7, 32), speed.ToString("F2"), 2);
+            Engine.WriteText(new Point(113, 32), $"{ModelRenderer.CameraPosition.X:000} {ModelRenderer.CameraPosition.Z:000}", 2);
+            Engine.WriteText(new Point(113, 33), $"{CustomMath.ConvertRadiansToDegrees(ModelRenderer.CameraRotation) % 360:00.0}", 2);
         }
 
         public void DrawCompassBar()
@@ -108,6 +112,18 @@ namespace RexMinus1
             AnimationRenderer.Clear();
             ModelRenderer.CameraPosition = ModelRenderer.StartingCameraPosition;
             ModelRenderer.CameraRotation = 0.0f;
+
+            proximity = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 5, Text = "PROXIMITY ALERT", IsCentered = true };
+            AnimationRenderer.Add(proximity);
+
+            overheat = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 2, Text = "OVERHEAT", Origin = new Point(98, 57) };
+            AnimationRenderer.Add(overheat);
+
+            lowenergy = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 10, Text = "LOW ENERGY", Origin = new Point(63, 57) };
+            AnimationRenderer.Add(lowenergy);
+
+            lowshield = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 10, Text = "LOW SHIELD", Origin = new Point(28, 57) };
+            AnimationRenderer.Add(lowshield);
         }
 
         public virtual void Create()
@@ -130,6 +146,8 @@ namespace RexMinus1
         }
 
         private DateTime lastProximityAlert = DateTime.MinValue;
+        private BorderedTextAnimation lowenergy;
+        private BorderedTextAnimation lowshield;
 
         public virtual void CheckCollisions()
         {
@@ -149,6 +167,12 @@ namespace RexMinus1
                         AudioPlaybackEngine.Instance.PlayCachedSound("radar_close");
                         lastProximityAlert = DateTime.Now;
                     }
+
+                    proximity.IsPaused = false;
+                }
+                else if (proximity.IsPaused == false)
+                {
+                    proximity.IsPaused = true;
                 }
 
                 if (!item.IsDetected && item.Collision(ModelRenderer.CameraPosition) < item.DetectionRange)
@@ -197,6 +221,10 @@ namespace RexMinus1
 
             if (PlayerManager.Instance.Energy < 1)
                 PlayerManager.Instance.Energy += 0.01f;
+
+            overheat.IsPaused = PlayerManager.Instance.Heat < 0.7;
+            lowenergy.IsPaused = PlayerManager.Instance.Energy > 0.3;
+            lowshield.IsPaused = PlayerManager.Instance.Shield > 0.5;
         }
 
         public virtual bool CheckLose()

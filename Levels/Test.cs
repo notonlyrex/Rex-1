@@ -12,18 +12,8 @@ namespace RexMinus1.Levels
 
         public override void Start()
         {
-            if (PlayerManager.Instance.IsMusicEnabled)
-                MusicPlaybackEngine.Instance.PlayMusic("Assets/song_main.ogg");
+            models.Clear();
 
-            AudioPlaybackEngine.Instance.PlayCachedSound("startgame");
-
-            speed = 0;
-
-            base.Start();
-        }
-
-        public override void Create()
-        {
             models.Add(new Mine
             {
                 Position = new Vector3(0, 0, 23),
@@ -36,6 +26,18 @@ namespace RexMinus1.Levels
                 Position = new Vector3(30, 0, 3),
             });
 
+            if (PlayerManager.Instance.IsMusicEnabled)
+                MusicPlaybackEngine.Instance.PlayMusic("Assets/song_main.ogg");
+
+            AudioPlaybackEngine.Instance.PlayCachedSound("startgame");
+
+            speed = 0;
+
+            base.Start();
+        }
+
+        public override void Create()
+        {
             laser = new Animations.Laser();
 
             base.Create();
@@ -57,14 +59,14 @@ namespace RexMinus1.Levels
             if (Engine.GetKeyDown(ConsoleKey.UpArrow) || Engine.GetKeyDown(ConsoleKey.W))
             {
                 speed += 0.05f;
-                PlayerManager.Instance.Energy -= 0.01f;
+                PlayerManager.Instance.Energy -= 0.15f;
                 PlayerManager.Instance.Heat += 0.1f;
             }
 
             if (Engine.GetKeyDown(ConsoleKey.DownArrow) || Engine.GetKeyDown(ConsoleKey.S))
             {
                 speed -= 0.04f;
-                PlayerManager.Instance.Energy -= 0.01f;
+                PlayerManager.Instance.Energy -= 0.15f;
                 PlayerManager.Instance.Heat += 0.1f;
             }
 

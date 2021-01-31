@@ -22,6 +22,10 @@
         /// </summary>
         public int BackgroundColor { get; set; }
 
+        public Point Origin { get; set; }
+
+        public bool IsCentered { get; set; }
+
         private int currentFrame = 0;
         private bool isVisible = false;
 
@@ -31,9 +35,11 @@
             {
                 if (isVisible)
                 {
-                    var center = new Point(Engine.WindowSize.X / 2, Engine.WindowSize.Y / 2);
-                    Engine.Frame(new Point(center.X - Text.Length / 2 - 1, center.Y - 1), new Point(center.X + Text.Length / 2 + 1, center.Y + 1), Color, BackgroundColor);
-                    Engine.WriteText(new Point(center.X - Text.Length / 2, center.Y), Text, Color, BackgroundColor);
+                    if (IsCentered)
+                        Origin = new Point(Engine.WindowSize.X / 2, Engine.WindowSize.Y / 2);
+
+                    Engine.Frame(new Point(Origin.X - Text.Length / 2 - 1, Origin.Y - 1), new Point(Origin.X + Text.Length / 2 + 1, Origin.Y + 1), Color, BackgroundColor);
+                    Engine.WriteText(new Point(Origin.X - Text.Length / 2, Origin.Y), Text, Color, BackgroundColor);
                 }
 
                 if (currentFrame > Speed)
