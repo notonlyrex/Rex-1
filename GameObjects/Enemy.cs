@@ -20,7 +20,7 @@ namespace RexMinus1.GameObjects
 
         public bool IsVisible { get; set; } = true;
 
-        public float HitRange { get; set; } = 12;
+        public float HitRange { get; set; } = 25;
 
         public float HitAngle { get; set; } = 30;
 
@@ -30,7 +30,6 @@ namespace RexMinus1.GameObjects
         {
             var d = Math.Sqrt(Math.Pow(Position.X - player.X, 2) + Math.Pow(Position.Y - player.Y, 2) + Math.Pow(Position.Z - player.Z, 2));
             return (float)d;
-            //return Math.Abs(Vector3.Dot(player, Position));
         }
 
         public virtual void Hit(Vector3 playerPosition, Vector3 playerRotation)

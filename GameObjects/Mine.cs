@@ -13,7 +13,8 @@ namespace RexMinus1.GameObjects
 
             CollisionRange = 10;
             DetectionRange = 100;
-            IdentificationRange = 20;
+            IdentificationRange = 50;
+            HitRange = 40;
             IsVisible = true;
         }
 

@@ -67,12 +67,18 @@ namespace RexMinus1
             Engine.WriteText(new Point(113, 33), $"{CustomMath.ConvertRadiansToDegrees(ModelRenderer.CameraRotation) % 360:00.0}", 2);
         }
 
+        private double DistanceFromCamera(ICollision collider)
+        {
+            var m = collider as Model;
+            return Math.Sqrt(Math.Pow(m.Position.X - ModelRenderer.CameraPosition.X, 2) + Math.Pow(m.Position.Y - ModelRenderer.CameraPosition.Y, 2) + Math.Pow(m.Position.Z - ModelRenderer.CameraPosition.Z, 2));
+        }
+
         public void DrawCompassBar()
         {
             if (models.Count == 0)
                 return;
 
-            foreach (var item in models.OfType<ICollision>().Where(x => x.IsDetected))
+            foreach (var item in models.OfType<ICollision>().Where(x => x.IsDetected).OrderByDescending(x => DistanceFromCamera(x)))
             {
                 var m = item as Model;
 
@@ -173,7 +179,9 @@ namespace RexMinus1
                 {
                     if (DateTime.Now - lastProximityAlert > TimeSpan.FromMilliseconds(600))
                     {
-                        //AudioPlaybackEngine.Instance.PlayCachedSound("radar_close");
+#if !DEBUG
+                        AudioPlaybackEngine.Instance.PlayCachedSound("radar_close");
+#endif
                         lastProximityAlert = DateTime.Now;
                     }
 

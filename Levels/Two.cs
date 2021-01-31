@@ -31,25 +31,24 @@ namespace RexMinus1.Levels
 
             models.Add(new Mine
             {
-                Position = new Vector3(0, 0, 500),
+                Position = new Vector3(0, 0, 50),
                 RotationX = 1.241f
             });
 
             models.Add(new Mine
             {
-                Position = new Vector3(500, 0, 500),
+                Position = new Vector3(0, 0, 100),
                 RotationX = 2.11f
             });
 
             models.Add(new Mine
             {
-                Position = new Vector3(1000, 0, 500),
+                Position = new Vector3(0, 0, 300),
                 RotationX = 3.41f
             });
 
             models.Add(new Astronaut
             {
-                Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj"),
                 Position = new Vector3(0, 0, 180),
             });
 
@@ -65,7 +64,7 @@ namespace RexMinus1.Levels
             laser = new Animations.Laser();
             timer = new Timer() { Span = TimeSpan.FromSeconds(2) };
 
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 6, Text = "Rescue the astronaut and destroy the space mine." }, null));
+            //anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 6, Text = "Rescue the astronaut and destroy the space mine." }, null));
 
             base.Create();
         }

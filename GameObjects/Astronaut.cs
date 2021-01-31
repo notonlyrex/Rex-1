@@ -11,10 +11,15 @@ namespace RexMinus1.GameObjects
         public float CollisionAttack { get; set; } = 0;
         public float CollisionRange { get; set; } = 5;
         public float DetectionRange { get; set; } = 50;
-        public float IdentificationRange { get; set; } = 10;
+        public float IdentificationRange { get; set; } = 30;
         public bool IsVisible { get; set; } = true;
         public bool IsIdentified { get; set; } = false;
         public bool IsDetected { get; set; } = false;
+
+        public Astronaut()
+        {
+            Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj");
+        }
 
         public float Collision(Vector3 player)
         {

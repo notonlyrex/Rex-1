@@ -31,14 +31,14 @@ namespace RexMinus1.Levels
 
             models.Add(new Mine
             {
-                Position = new Vector3(0, 0, 23),
+                Position = new Vector3(0, 0, 60),
                 RotationX = 1.241f
             });
 
             models.Add(new Astronaut
             {
                 Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj"),
-                Position = new Vector3(30, 0, 3),
+                Position = new Vector3(0, 0, 30),
             });
 
             AudioPlaybackEngine.Instance.PlayCachedSound("startgame");
