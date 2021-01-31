@@ -61,6 +61,9 @@ namespace RexMinus1.Levels
             laser = new Animations.Laser();
             timer = new Timer() { Span = TimeSpan.FromSeconds(5) };
 
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 4, Text = "WARNING: Visualisation system failure." }, null));
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 55), Color = 4, Text = "Objects on screen may be closer than they appear." }, null));
+
             base.Create();
         }
 

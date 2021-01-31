@@ -35,14 +35,14 @@ namespace RexMinus1.Levels
 
             models.Add(new MovingMine
             {
-                Position = new Vector3(50, 0, 100),
+                Position = new Vector3(150, 0, 100),
                 RotationX = 2.11f,
                 DetectionRange = 500
             });
 
             models.Add(new MovingMine
             {
-                Position = new Vector3(20, 0, 300),
+                Position = new Vector3(120, 0, 300),
                 RotationX = 3.41f,
                 DetectionRange = 500
             });
@@ -55,7 +55,7 @@ namespace RexMinus1.Levels
 
             models.Add(new Astronaut
             {
-                Position = new Vector3(50, 0, 0),
+                Position = new Vector3(150, 0, 30),
                 DetectionRange = 500
             });
 

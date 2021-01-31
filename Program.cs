@@ -110,7 +110,7 @@ namespace RexMinus1
 #if !DEBUG
             levelManager.GoTo(levelManager.Welcome);
 #else
-            levelManager.GoTo(8);
+            levelManager.GoTo(levelManager.Welcome);
 #endif
         }
 

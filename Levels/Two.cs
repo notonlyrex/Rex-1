@@ -62,8 +62,6 @@ namespace RexMinus1.Levels
             laser = new Animations.Laser();
             timer = new Timer() { Span = TimeSpan.FromSeconds(2) };
 
-            //anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 6, Text = "Rescue the astronaut and destroy the space mine." }, null));
-
             base.Create();
         }
 
