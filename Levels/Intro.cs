@@ -23,7 +23,7 @@ namespace RexMinus1.Levels
             anims.Add((new HorizontalTextAnimation() { Text = "Warning!", Origin = new Point(10, 20), Color = 7, Speed = 1, IsPaused = true }, "beep_danger"));
             anims.Add((new BorderedTextAnimation() { Text = "PROXIMITY ALERT", Color = 0, IsPaused = true, BackgroundColor = 12, IsCentered = true, Speed = 1 }, "radar_close"));
             anims.Add((new HorizontalTextAnimation() { Text = "The ship is under attack!", Origin = new Point(10, 22), Color = 7, Speed = 1, IsPaused = true }, "radar_close"));
-            anims.Add((new HorizontalTextAnimation() { Text = "The Grabons are here! It's a trap!", Origin = new Point(10, 22), Color = 7, Speed = 1, IsPaused = true }, "beep_danger"));
+            anims.Add((new HorizontalTextAnimation() { Text = "Grabons are here! It's a trap!", Origin = new Point(10, 22), Color = 7, Speed = 1, IsPaused = true }, "beep_danger"));
             anims.Add((new HorizontalTextAnimation() { Text = "HULL INTEGRITY BREACH!", Origin = new Point(10, 25), Color = 12, Speed = 1, IsPaused = true }, "beep_danger"));
             anims.Add((new HorizontalTextAnimation() { Text = "OXYGEN LEAK!", Origin = new Point(10, 26), Color = 12, Speed = 1, IsPaused = true }, "beep_error_2"));
             anims.Add((new HorizontalTextAnimation() { Text = "Wake up, commander!", Origin = new Point(20, 30), Color = 7, Speed = 1, IsPaused = true }, "boom_2"));
