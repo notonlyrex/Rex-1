@@ -98,6 +98,15 @@ namespace ConsoleGameEngine
 
                 var transformMatrix = modelMatrix * viewMatrix * projectionMatrix;
 
+                //if (Math.Sqrt(Math.Pow(modelPosition.X - CameraPosition.X, 2) + Math.Pow(modelPosition.Y - CameraPosition.Y, 2) + Math.Pow(modelPosition.Z - CameraPosition.Z, 2)) > )
+                //{
+                //}
+
+                var angle2 = CustomMath.ConvertRadiansToDegrees(CustomMath.SimpleAngleBetweenTwoVectors(CameraForward, modelPosition - CameraPosition));
+
+                if (angle2 > 90 || angle2 < -90)
+                    break;
+
                 for (int i = 0; i < mesh.Triangles.Length; i++)
                 {
                     Triangle tri = mesh.Triangles[i];

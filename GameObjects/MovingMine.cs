@@ -41,7 +41,7 @@ namespace RexMinus1.GameObjects
         {
             RotationY += 0.05f;
 
-            Position = new Vector3(Position.X, Position.Y, Position.Z + dir);
+            Position = new Vector3(Position.X, Position.Y, Position.Z + dir * 0.1f);
 
             base.Move();
         }
