@@ -10,8 +10,8 @@ namespace RexMinus1
 
         public int GameOverWin { get; set; }
         public int GameOverLose { get; set; }
-        public int Menu { get; set; }
-        public int MainScreen { get; set; }
+        public int Welcome { get; set; }
+        public int Intro { get; set; }
 
         public Level CurrentLevel => levels[currentLevel];
 

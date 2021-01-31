@@ -114,6 +114,7 @@ namespace RexMinus1
             ModelRenderer.CameraRotation = 0.0f;
 
             proximity = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 5, Text = "PROXIMITY ALERT", IsCentered = true };
+            proximity.IsPaused = true;
             AnimationRenderer.Add(proximity);
 
             overheat = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 2, Text = "OVERHEAT", Origin = new Point(98, 57) };

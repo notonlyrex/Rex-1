@@ -27,9 +27,6 @@ namespace RexMinus1.Levels
                 Position = new Vector3(30, 0, 3),
             });
 
-            if (PlayerManager.Instance.IsMusicEnabled)
-                MusicPlaybackEngine.Instance.PlayMusic("Assets/song_main.ogg");
-
             AudioPlaybackEngine.Instance.PlayCachedSound("startgame");
 
             speed = 0;

@@ -78,21 +78,28 @@ namespace RexMinus1
             levelManager = new LevelManager();
             animationRenderer = new AnimationRenderer(Engine);
 
+            // inicjalizacja podstawowych elementow
+#if DEBUG
+            PlayerManager.Instance.IsMusicEnabled = false;
+#else
+            PlayerManager.Instance.IsMusicEnabled = true;
+#endif
+
             // ładowanie poziomów i ekranów
-            levelManager.Add(new Levels.Intro());
+            levelManager.Add(new Levels.MainScreen());
             levelManager.Add(new Levels.Test());
 
             levelManager.GameOverLose = 0;
             levelManager.GameOverWin = 0;
-            levelManager.MainScreen = 0;
-
-            // inicjalizacja podstawowych elementow
-            PlayerManager.Instance.IsMusicEnabled = false;
+            levelManager.Intro = 0;
+            levelManager.Welcome = 0;
 
             // inicjalizacja podstawowych rzeczy w poziomach
             // i ladowanie do pamięci wszystkiego
             levelManager.Initialize(Engine, modelRenderer, spriteRenderer, animationRenderer);
-            levelManager.GoTo(0);
+
+            // przejście do pierwszego poziomu, ekranu powitalnego
+            levelManager.GoTo(levelManager.Welcome);
         }
 
         // co każdą klatkę - tutaj obliczenia
