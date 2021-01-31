@@ -29,8 +29,13 @@ namespace ConsoleGameEngine
         public void PlayMusic(string fileName)
         {
             var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(fileName);
-
-            mixer.AddMixerInput((IWaveProvider)vorbisStream);
+            try
+            {
+                mixer.AddMixerInput((IWaveProvider)vorbisStream);
+            }
+            catch (ArgumentException)
+            {
+            }
         }
 
         public void Dispose()

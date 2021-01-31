@@ -27,7 +27,7 @@ namespace RexMinus1.Levels
             PlayerManager.Instance.EnergyToShoot = 0.2f;
 
             if (PlayerManager.Instance.IsMusicEnabled)
-                MusicPlaybackEngine.Instance.PlayMusic("Assets/song_main.ogg");
+                MusicPlaybackEngine.Instance.PlayMusic("Assets/song_main_2_v2.ogg");
 
             base.Start();
 
