@@ -118,6 +118,10 @@ namespace RexMinus1
 
         public virtual void Start()
         {
+#if DEBUG
+            PlayerManager.Instance.Shield = 1;
+#endif
+
             AnimationRenderer.Clear();
             ModelRenderer.CameraPosition = ModelRenderer.StartingCameraPosition;
             ModelRenderer.CameraRotation = 0.0f;
@@ -255,6 +259,9 @@ namespace RexMinus1
         {
             // sprawdzenie warunków przegranej
             if (PlayerManager.Instance.Heat >= 0.95)
+                return true;
+
+            if (PlayerManager.Instance.Shield <= 0)
                 return true;
 
             return false;
