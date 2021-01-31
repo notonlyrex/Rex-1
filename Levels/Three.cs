@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace RexMinus1.Levels
 {
-    internal class Two : Level
+    internal class Three : Level
     {
         private Animations.Laser laser;
         private Timer timer;
@@ -16,7 +16,6 @@ namespace RexMinus1.Levels
 
         public override void Start()
         {
-            PlayerManager.Instance.Heat = 0;
             PlayerManager.Instance.HeatToAccelerate = 0.1f;
             PlayerManager.Instance.HeatToShoot = 0.1f;
             PlayerManager.Instance.Acceleration = 0.02f;
@@ -29,19 +28,19 @@ namespace RexMinus1.Levels
 
             models.Add(new Mine
             {
-                Position = new Vector3(0, 0, 50),
+                Position = new Vector3(100, 0, 50),
                 RotationX = 1.241f
             });
 
             models.Add(new Mine
             {
-                Position = new Vector3(0, 0, 100),
+                Position = new Vector3(50, 0, 100),
                 RotationX = 2.11f
             });
 
             models.Add(new Mine
             {
-                Position = new Vector3(0, 0, 300),
+                Position = new Vector3(20, 0, 300),
                 RotationX = 3.41f
             });
 
@@ -60,9 +59,10 @@ namespace RexMinus1.Levels
         public override void Create()
         {
             laser = new Animations.Laser();
-            timer = new Timer() { Span = TimeSpan.FromSeconds(2) };
+            timer = new Timer() { Span = TimeSpan.FromSeconds(5) };
 
-            //anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 6, Text = "Rescue the astronaut and destroy the space mine." }, null));
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 4, Text = "WARNUNG: COMPUTER SYSTEM COMPROMISED." }, null));
+            anims.Add((new ScramblingAnimation() { Intensity = 100 }, null));
 
             base.Create();
         }
@@ -161,10 +161,10 @@ namespace RexMinus1.Levels
             }
 
             // sprawdzenie warunków zwycięstwa i przegranej
-            if (base.CheckWin())
-            {
-                LevelManager.GoToNext();
-            }
+            //if (base.CheckWin())
+            //{
+            //LevelManager.GoToNext();
+            //}
 
             if (base.CheckLose())
                 LevelManager.GoTo(LevelManager.GameOverLose);

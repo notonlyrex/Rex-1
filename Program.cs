@@ -91,6 +91,7 @@ namespace RexMinus1
             levelManager.Add(new Levels.Intro());
             levelManager.Add(new Levels.One());
             levelManager.Add(new Levels.Two());
+            levelManager.Add(new Levels.Three());
 
             levelManager.GameOverLose = 0;
             levelManager.GameOverWin = 0;
@@ -103,7 +104,7 @@ namespace RexMinus1
 
             // przejście do pierwszego poziomu, ekranu powitalnego
             //levelManager.GoTo(levelManager.Welcome);
-            levelManager.GoTo(2);
+            levelManager.GoTo(4);
         }
 
         // co każdą klatkę - tutaj obliczenia
