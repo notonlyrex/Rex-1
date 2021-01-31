@@ -117,6 +117,14 @@ namespace RexMinus1
 
             if (Engine.GetKeyDown(ConsoleKey.Escape))
                 Exit();
+
+            if (Engine.GetKeyDown(ConsoleKey.Escape))
+                Exit();
+
+#if DEBUG
+            if (Engine.GetKeyDown(ConsoleKey.F2))
+                levelManager.GoToNext();
+#endif
         }
 
         // co każdą klatkę - tutaj rendering

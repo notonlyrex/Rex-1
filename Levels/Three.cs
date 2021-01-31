@@ -61,9 +61,6 @@ namespace RexMinus1.Levels
             laser = new Animations.Laser();
             timer = new Timer() { Span = TimeSpan.FromSeconds(5) };
 
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 4, Text = "WARNUNG: COMPUTER SYSTEM COMPROMISED." }, null));
-            anims.Add((new ScramblingAnimation() { Intensity = 100 }, null));
-
             base.Create();
         }
 
@@ -161,10 +158,10 @@ namespace RexMinus1.Levels
             }
 
             // sprawdzenie warunków zwycięstwa i przegranej
-            //if (base.CheckWin())
-            //{
-            //LevelManager.GoToNext();
-            //}
+            if (base.CheckWin())
+            {
+                LevelManager.GoToNext();
+            }
 
             if (base.CheckLose())
                 LevelManager.GoTo(LevelManager.GameOverLose);

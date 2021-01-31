@@ -28,9 +28,13 @@ namespace RexMinus1
 
         public void GoToNext()
         {
-            if (levels.Count >= currentLevel + 1)
+            if (levels.Count > currentLevel + 1)
             {
                 GoTo(currentLevel + 1);
+            }
+            else
+            {
+                GoTo(GameOverWin);
             }
         }
 
