@@ -7,7 +7,7 @@ namespace RexMinus1.Levels
     internal class Intro : Level
     {
         private Timer timer;
-        private HorizontalTextAnimation anim;
+        private Animation anim;
 
         public override void Start()
         {
@@ -27,9 +27,12 @@ namespace RexMinus1.Levels
         {
             models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/obj_mine.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
 
-            timer = new Timer { Span = TimeSpan.FromSeconds(1) };
+            timer = new Timer { Span = TimeSpan.FromSeconds(10) };
 
-            anim = new HorizontalTextAnimation() { Text = "Hello, world!", Origin = new Point(10, 20), Color = 7, Speed = 1 };
+            //anim = new HorizontalTextAnimation() { Text = "Hello, world!", Origin = new Point(10, 20), Color = 7, Speed = 1 };
+            //anim = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 5, Text = "PROXIMITY ALERT" };
+            //anim = new NoiseAnimation() { Intensity = 200 };
+            anim = new ShakeAnimation(10, 10, 120);
             anim.IsPaused = false;
 
             base.Create();
@@ -49,6 +52,7 @@ namespace RexMinus1.Levels
 
         public override void Render()
         {
+            Engine.WriteText(new Point(50, 50), "Hello, world.", 15);
             base.Render();
         }
     }
