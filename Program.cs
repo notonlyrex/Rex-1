@@ -88,7 +88,7 @@ namespace RexMinus1
             // ładowanie poziomów i ekranów
             levelManager.Add(new Levels.MainScreen());
             levelManager.Add(new Levels.Intro());
-            levelManager.Add(new Levels.Test());
+            levelManager.Add(new Levels.One());
 
             levelManager.GameOverLose = 0;
             levelManager.GameOverWin = 0;
@@ -100,7 +100,8 @@ namespace RexMinus1
             levelManager.Initialize(Engine, modelRenderer, spriteRenderer, animationRenderer);
 
             // przejście do pierwszego poziomu, ekranu powitalnego
-            levelManager.GoTo(levelManager.Welcome);
+            //levelManager.GoTo(levelManager.Welcome);
+            levelManager.GoTo(2);
         }
 
         // co każdą klatkę - tutaj obliczenia

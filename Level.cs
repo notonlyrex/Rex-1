@@ -173,7 +173,7 @@ namespace RexMinus1
                 {
                     if (DateTime.Now - lastProximityAlert > TimeSpan.FromMilliseconds(600))
                     {
-                        AudioPlaybackEngine.Instance.PlayCachedSound("radar_close");
+                        //AudioPlaybackEngine.Instance.PlayCachedSound("radar_close");
                         lastProximityAlert = DateTime.Now;
                     }
 

@@ -1,18 +1,32 @@
 ﻿using ConsoleGameEngine;
 using RexMinus1.GameObjects;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
 namespace RexMinus1.Levels
 {
-    internal class Test : Level
+    internal class One : Level
     {
         private Animations.Laser laser;
-        private ScramblingAnimation scramble;
+        private Timer timer;
+        private List<(Animation, string)> anims = new List<(Animation, string)>();
+        private int currentAnim = -1;
 
         public override void Start()
         {
+            PlayerManager.Instance.Shield = 1;
+            PlayerManager.Instance.Energy = 1;
+            PlayerManager.Instance.Heat = 0;
+            PlayerManager.Instance.HeatToAccelerate = 0.1f;
+            PlayerManager.Instance.HeatToShoot = 0.1f;
+            PlayerManager.Instance.Acceleration = 0.02f;
+            PlayerManager.Instance.Deceleration = 0.01f;
+            PlayerManager.Instance.EnergyToAccelerate = 0.15f;
+            PlayerManager.Instance.EnergyToDecelerate = 0.15f;
+            PlayerManager.Instance.EnergyToShoot = 0.2f;
+
             models.Clear();
 
             models.Add(new Mine
@@ -37,13 +51,38 @@ namespace RexMinus1.Levels
         public override void Create()
         {
             laser = new Animations.Laser();
-            scramble = new ScramblingAnimation() { Intensity = 250 };
+            timer = new Timer() { Span = TimeSpan.FromSeconds(2) };
+
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 48), Color = 7, Text = "Use arrows or WSAD to control the ship." }, "beep_3"));
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 49), Color = 7, Text = "When closing to the object it will be identified." }, "beep_3"));
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 50), Color = 7, Text = "Check out your radar on the top." }, "beep_3"));
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 51), Color = 7, Text = "Go near the green objects to take astronauts." }, "beep_3"));
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 52), Color = 7, Text = "Avoid enemies, marked red." }, "beep_3"));
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 53), Color = 7, Text = "Press SPACE to shoot laser beams." }, "beep_3"));
+            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 6, Text = "Rescue the astronaut and destroy the space mine." }, null));
 
             base.Create();
         }
 
         public override void Update()
         {
+            // animacje wyjaśniające
+            if (timer.Elapsed)
+            {
+                currentAnim++;
+                if (currentAnim < anims.Count)
+                {
+                    var (anim, sound) = anims[currentAnim];
+                    if (sound != null)
+                        AudioPlaybackEngine.Instance.PlayCachedSound(sound);
+
+                    if (anim != null)
+                        PlayAnimation(anim);
+
+                    timer.Reset();
+                }
+            }
+
             // zmiana pozycji gracza
             if (Engine.GetKeyDown(ConsoleKey.LeftArrow) || Engine.GetKeyDown(ConsoleKey.A))
             {
@@ -104,7 +143,7 @@ namespace RexMinus1.Levels
             ModelRenderer.UpdateCameraMovement(speed, 0.0f);
 
             // strzał
-            if (Engine.GetKeyDown(ConsoleKey.U) && PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToShoot)
+            if (Engine.GetKeyDown(ConsoleKey.Spacebar) && PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToShoot)
             {
                 // animacja lasera
                 laser.Reset();
@@ -119,13 +158,13 @@ namespace RexMinus1.Levels
                 // sprawdzenie warunków trafienia
                 foreach (var enemy in models.OfType<Enemy>())
                 {
-                    enemy.Hit(ModelRenderer.CameraPosition);
+                    enemy.Hit(ModelRenderer.CameraPosition, ModelRenderer.CameraForward);
                 }
             }
 
             // sprawdzenie warunków zwycięstwa i przegranej
-            //if (base.CheckWin())
-            //    LevelManager.GoTo(LevelManager.GameOverWin);
+            if (base.CheckWin())
+                LevelManager.GoToNext();
 
             if (base.CheckLose())
                 LevelManager.GoTo(LevelManager.GameOverLose);
