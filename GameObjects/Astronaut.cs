@@ -18,7 +18,7 @@ namespace RexMinus1.GameObjects
 
         public float Collision(Vector3 player)
         {
-            var d = Math.Abs(Vector3.Dot(player, this.Position));
+            var d = Math.Sqrt(Math.Pow(Position.X - player.X, 2) + Math.Pow(Position.Y - player.Y, 2) + Math.Pow(Position.Z - player.Z, 2));
 
             if (d < CollisionRange)
             {
@@ -26,7 +26,7 @@ namespace RexMinus1.GameObjects
                 IsCollected = true;
             }
 
-            return d;
+            return (float)d;
         }
     }
 }

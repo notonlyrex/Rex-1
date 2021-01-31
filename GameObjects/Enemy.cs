@@ -28,17 +28,20 @@ namespace RexMinus1.GameObjects
 
         public virtual float Collision(Vector3 player)
         {
-            return Math.Abs(Vector3.Dot(player, Position));
+            var d = Math.Sqrt(Math.Pow(Position.X - player.X, 2) + Math.Pow(Position.Y - player.Y, 2) + Math.Pow(Position.Z - player.Z, 2));
+            return (float)d;
+            //return Math.Abs(Vector3.Dot(player, Position));
         }
 
         public virtual void Hit(Vector3 playerPosition, Vector3 playerRotation)
         {
             var angle2 = CustomMath.ConvertRadiansToDegrees(CustomMath.SimpleAngleBetweenTwoVectors(playerRotation, this.Position - playerPosition));
-            var distance = Math.Abs(Vector3.Dot(playerPosition, this.Position));
+            var distance = Math.Sqrt(Math.Pow(Position.X - playerPosition.X, 2) + Math.Pow(Position.Y - playerPosition.Y, 2) + Math.Pow(Position.Z - playerPosition.Z, 2));
 
             if (distance < HitRange && Math.Abs(angle2) < HitAngle && DateTime.Now - lastHit > TimeSpan.FromMilliseconds(1000))
             {
                 Shield -= 0.1f;
+                AudioPlaybackEngine.Instance.PlayCachedSound("boom_3");
                 lastHit = DateTime.Now;
             }
         }

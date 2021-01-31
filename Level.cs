@@ -79,7 +79,7 @@ namespace RexMinus1
                 var angle2 = CustomMath.ConvertRadiansToDegrees(CustomMath.SimpleAngleBetweenTwoVectors(ModelRenderer.CameraForward, m.Position - ModelRenderer.CameraPosition));
                 var compass_position = (angle2 / 180 * 64) + 64;
 
-                var distance = Math.Abs(Vector3.Dot(ModelRenderer.CameraPosition, m.Position));
+                var distance = Math.Sqrt(Math.Pow(m.Position.X - ModelRenderer.CameraPosition.X, 2) + Math.Pow(m.Position.Y - ModelRenderer.CameraPosition.Y, 2) + Math.Pow(m.Position.Z - ModelRenderer.CameraPosition.Z, 2));
                 if (distance > 999)
                     distance = 999;
 

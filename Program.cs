@@ -68,6 +68,7 @@ namespace RexMinus1
         {
             // paleta domyślna
             Engine.SetPalette(Palettes.Default);
+            Console.Title = "Rex -1";
 
             // docelowy framerate
             TargetFramerate = 30;
@@ -89,6 +90,7 @@ namespace RexMinus1
             levelManager.Add(new Levels.MainScreen());
             levelManager.Add(new Levels.Intro());
             levelManager.Add(new Levels.One());
+            levelManager.Add(new Levels.Two());
 
             levelManager.GameOverLose = 0;
             levelManager.GameOverWin = 0;

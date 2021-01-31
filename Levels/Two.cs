@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace RexMinus1.Levels
 {
-    internal class One : Level
+    internal class Two : Level
     {
         private Animations.Laser laser;
         private Timer timer;
@@ -31,17 +31,29 @@ namespace RexMinus1.Levels
 
             models.Add(new Mine
             {
-                Position = new Vector3(0, 0, 23),
+                Position = new Vector3(0, 0, 500),
                 RotationX = 1.241f
+            });
+
+            models.Add(new Mine
+            {
+                Position = new Vector3(500, 0, 500),
+                RotationX = 2.11f
+            });
+
+            models.Add(new Mine
+            {
+                Position = new Vector3(1000, 0, 500),
+                RotationX = 3.41f
             });
 
             models.Add(new Astronaut
             {
                 Mesh = Mesh.LoadFromObj("Assets/obj_astro.obj"),
-                Position = new Vector3(30, 0, 3),
+                Position = new Vector3(0, 0, 180),
             });
 
-            AudioPlaybackEngine.Instance.PlayCachedSound("startgame");
+            //AudioPlaybackEngine.Instance.PlayCachedSound("startgame");
 
             speed = 0;
 
@@ -53,12 +65,6 @@ namespace RexMinus1.Levels
             laser = new Animations.Laser();
             timer = new Timer() { Span = TimeSpan.FromSeconds(2) };
 
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 48), Color = 7, Text = "Use arrows or WSAD to control the ship." }, "beep_3"));
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 49), Color = 7, Text = "When closing to the object it will be identified." }, "beep_3"));
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 50), Color = 7, Text = "Check out your radar on the top." }, "beep_3"));
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 51), Color = 7, Text = "Go near the green objects to take astronauts." }, "beep_3"));
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 52), Color = 7, Text = "Avoid enemies, marked red." }, "beep_3"));
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 53), Color = 7, Text = "Press SPACE to shoot laser beams." }, "beep_3"));
             anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 6, Text = "Rescue the astronaut and destroy the space mine." }, null));
 
             base.Create();
@@ -134,11 +140,6 @@ namespace RexMinus1.Levels
                 ModelRenderer.UpdateFOV(-0.1f);
             }
 
-            if (Engine.GetKeyDown(ConsoleKey.F2))
-            {
-                LevelManager.GoTo(0);
-            }
-
             // aktualizacja pozycji
             ModelRenderer.UpdateCameraMovement(speed, 0.0f);
 
@@ -163,8 +164,10 @@ namespace RexMinus1.Levels
             }
 
             // sprawdzenie warunków zwycięstwa i przegranej
-            if (models.OfType<Astronaut>().Count() == 0 && models.OfType<Mine>().Count() == 0)
-                LevelManager.GoToNext();
+            //if (base.CheckWin())
+            //{
+            //LevelManager.GoToNext();
+            //}
 
             if (base.CheckLose())
                 LevelManager.GoTo(LevelManager.GameOverLose);
