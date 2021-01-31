@@ -86,12 +86,12 @@ namespace RexMinus1.Levels
             // zmiana pozycji gracza
             if (Engine.GetKeyDown(ConsoleKey.LeftArrow) || Engine.GetKeyDown(ConsoleKey.A))
             {
-                ModelRenderer.UpdateCameraRotation(-0.05f);
+                ModelRenderer.UpdateCameraRotation(0.05f);
             }
 
             if (Engine.GetKeyDown(ConsoleKey.RightArrow) || Engine.GetKeyDown(ConsoleKey.D))
             {
-                ModelRenderer.UpdateCameraRotation(0.05f);
+                ModelRenderer.UpdateCameraRotation(-0.05f);
             }
 
             if (Engine.GetKeyDown(ConsoleKey.UpArrow) || Engine.GetKeyDown(ConsoleKey.W))
@@ -116,12 +116,12 @@ namespace RexMinus1.Levels
 
             if (Engine.GetKeyDown(ConsoleKey.Q))
             {
-                ModelRenderer.UpdateCameraMovement(0.0f, -0.1f);
+                ModelRenderer.UpdateCameraMovement(0.0f, 0.1f);
             }
 
             if (Engine.GetKeyDown(ConsoleKey.E))
             {
-                ModelRenderer.UpdateCameraMovement(0.0f, 0.1f);
+                ModelRenderer.UpdateCameraMovement(0.0f, -0.1f);
             }
 
             if (Engine.GetKeyDown(ConsoleKey.R))

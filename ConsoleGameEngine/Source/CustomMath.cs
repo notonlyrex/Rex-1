@@ -20,21 +20,14 @@ namespace ConsoleGameEngine
             return (Math.PI / 180) * degrees;
         }
 
-
-
         public static double SimpleAngleBetweenTwoVectors(Vector3 a, Vector3 b)
-        {
-            
-            //return MathF.Acos((float)SimpleDotProduct(a,b)/(a.Length()*b.Length()));
-
-            float c;
-
-            c = MathF.Acos((float)Vector3.Dot(Vector3.Normalize(a), Vector3.Normalize(b)));
+        {      
+            float c = MathF.Acos((float)Vector3.Dot(Vector3.Normalize(a), Vector3.Normalize(b)));
     
             if (ConvertRadiansToDegrees(MathF.Atan2(b.Z - a.Z, b.X - a.X)) < 90)
                 c = -c;
             
-                return c;
+            return c;
         }
 
         public static Vector3 SimpleRotateVectorByDegree(Vector3 a, float r)

@@ -162,35 +162,43 @@ namespace ConsoleGameEngine
         /// <summary>
         ///  LookAtLH
         /// </summary>
-        /// <param name="eye">that defines the camera point. This value is used in translation</param>
-        /// <param name="target">that defines the camera look-at target</param>
-        /// <param name="up">that defines the up direction of the current world, usually [0, 1, 0]</param>
+        /// <param name="cameraPosition">that defines the camera point. This value is used in translation</param>
+        /// <param name="cameraTarget">that defines the camera look-at target</param>
+        /// <param name="cameraUpVector">that defines the up direction of the current world, usually [0, 1, 0]</param>
         /// <returns></returns>
-        public static Matrix LookAtLH(Vector3 eye, Vector3 target, Vector3 up)
+        public static Matrix LookAtLH(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUpVector)
         {
-            Vector3 xaxis, yaxis, zaxis;
+            Vector3 cameraRight, cameraUp, cameraDirection;
 
-            zaxis = Vector3.Subtract(target, eye);
-            zaxis = Vector3.Normalize(zaxis);
+            cameraDirection = Vector3.Subtract(cameraTarget, cameraPosition);
+            cameraDirection = Vector3.Normalize(cameraDirection );
 
-            xaxis = Vector3.Cross(up, zaxis);
-            xaxis = Vector3.Normalize(xaxis);
+            cameraRight = Vector3.Cross(cameraUpVector, cameraDirection);
+            cameraRight = Vector3.Normalize(cameraRight );
 
-            yaxis = Vector3.Cross(zaxis, xaxis);
+            cameraUp = Vector3.Cross(cameraDirection , cameraRight);
 
             Matrix result = Matrix.Identity();
 
-            result.m[0, 0] = xaxis.X; result.m[1, 0] = xaxis.Y; result.m[2, 0] = xaxis.Z;
-            result.m[0, 1] = yaxis.X; result.m[1, 1] = yaxis.Y; result.m[2, 1] = yaxis.Z;
-            result.m[0, 2] = zaxis.X; result.m[1, 2] = zaxis.Y; result.m[2, 2] = zaxis.Z;
+            result.m[0, 0] = cameraRight.X; 
+            result.m[1, 0] = cameraRight.Y; 
+            result.m[2, 0] = cameraRight.Z;
 
-            //result.m[0, 3] = 0.0f;
-            //result.m[1, 3] = 0.0f;
-            //result.m[2, 3] = 0.0f;
+            result.m[0, 1] = cameraUp.X; 
+            result.m[1, 1] = cameraUp.Y; 
+            result.m[2, 1] = cameraUp.Z;
 
-            result.m[3, 0] = -Vector3.Dot(xaxis, eye);
-            result.m[3, 1] = -Vector3.Dot(yaxis, eye);
-            result.m[3, 2] = -Vector3.Dot(zaxis, eye);
+            result.m[0, 2] = cameraDirection.X; 
+            result.m[1, 2] = cameraDirection.Y; 
+            result.m[2, 2] = cameraDirection.Z;
+
+            result.m[0, 3] = 0.0f;
+            result.m[1, 3] = 0.0f;
+            result.m[2, 3] = 0.0f;
+
+            result.m[3, 0] = -Vector3.Dot(cameraRight , cameraPosition);
+            result.m[3, 1] = -Vector3.Dot(cameraUp, cameraPosition);
+            result.m[3, 2] = -Vector3.Dot(cameraDirection , cameraPosition);
 
             //result.m[3, 3] = 1.0f;
 
