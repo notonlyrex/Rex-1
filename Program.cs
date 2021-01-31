@@ -87,11 +87,12 @@ namespace RexMinus1
 
             // ładowanie poziomów i ekranów
             levelManager.Add(new Levels.MainScreen());
+            levelManager.Add(new Levels.Intro());
             levelManager.Add(new Levels.Test());
 
             levelManager.GameOverLose = 0;
             levelManager.GameOverWin = 0;
-            levelManager.Intro = 0;
+            levelManager.Intro = 1;
             levelManager.Welcome = 0;
 
             // inicjalizacja podstawowych rzeczy w poziomach
