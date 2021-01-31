@@ -9,6 +9,7 @@ namespace RexMinus1.Levels
     internal class Test : Level
     {
         private Animations.Laser laser;
+        private ScramblingAnimation scramble;
 
         public override void Start()
         {
@@ -39,6 +40,7 @@ namespace RexMinus1.Levels
         public override void Create()
         {
             laser = new Animations.Laser();
+            scramble = new ScramblingAnimation() { Intensity = 250 };
 
             base.Create();
         }
@@ -58,16 +60,22 @@ namespace RexMinus1.Levels
 
             if (Engine.GetKeyDown(ConsoleKey.UpArrow) || Engine.GetKeyDown(ConsoleKey.W))
             {
-                speed += 0.05f;
-                PlayerManager.Instance.Energy -= 0.15f;
-                PlayerManager.Instance.Heat += 0.1f;
+                if (PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToAccelerate)
+                {
+                    speed += PlayerManager.Instance.Acceleration;
+                    PlayerManager.Instance.Energy -= PlayerManager.Instance.EnergyToAccelerate;
+                    PlayerManager.Instance.Heat += PlayerManager.Instance.HeatToAccelerate;
+                }
             }
 
             if (Engine.GetKeyDown(ConsoleKey.DownArrow) || Engine.GetKeyDown(ConsoleKey.S))
             {
-                speed -= 0.04f;
-                PlayerManager.Instance.Energy -= 0.15f;
-                PlayerManager.Instance.Heat += 0.1f;
+                if (PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToAccelerate)
+                {
+                    speed -= PlayerManager.Instance.Deceleration;
+                    PlayerManager.Instance.Energy -= PlayerManager.Instance.EnergyToDecelerate;
+                    PlayerManager.Instance.Heat += PlayerManager.Instance.HeatToAccelerate;
+                }
             }
 
             if (Engine.GetKeyDown(ConsoleKey.Q))
@@ -99,7 +107,7 @@ namespace RexMinus1.Levels
             ModelRenderer.UpdateCameraMovement(speed, 0.0f);
 
             // strzał
-            if (Engine.GetKeyDown(ConsoleKey.U))
+            if (Engine.GetKeyDown(ConsoleKey.U) && PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToShoot)
             {
                 // animacja lasera
                 laser.Reset();
@@ -108,8 +116,8 @@ namespace RexMinus1.Levels
                 AudioPlaybackEngine.Instance.PlayCachedSound("shoot_laser");
 
                 // aktualizacja energii
-                PlayerManager.Instance.Energy -= 0.1f;
-                PlayerManager.Instance.Heat += 0.1f;
+                PlayerManager.Instance.Energy -= PlayerManager.Instance.EnergyToShoot;
+                PlayerManager.Instance.Heat += PlayerManager.Instance.HeatToShoot;
 
                 // sprawdzenie warunków trafienia
                 foreach (var enemy in models.OfType<Enemy>())
@@ -131,10 +139,12 @@ namespace RexMinus1.Levels
 
         public override void Render()
         {
-            base.Render();
+            //base.Render();
+            ModelRenderer.Render();
 
             DrawCompassBar();
             DrawHud();
+            AnimationRenderer.Render();
         }
     }
 }

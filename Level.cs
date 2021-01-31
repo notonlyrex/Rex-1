@@ -19,7 +19,7 @@ namespace RexMinus1
         private Sprite hud_left;
         private Sprite hud_middle;
         private Sprite hud_right;
-
+        private ShakeAnimation collisionShake;
         protected float speed;
         private BorderedTextAnimation proximity;
         private BorderedTextAnimation overheat;
@@ -134,6 +134,8 @@ namespace RexMinus1
             hud_left = Sprite.FromFile("Assets/hud_bottom_bar_left.png");
             hud_middle = Sprite.FromFile("Assets/hud_bottom_bar_middle.png");
             hud_right = Sprite.FromFile("Assets/hud_bottom_bar_right.png");
+
+            collisionShake = new ShakeAnimation(20, 0, 15, false);
         }
 
         public virtual void MoveObjects()
@@ -158,6 +160,12 @@ namespace RexMinus1
                 {
                     PlayerManager.Instance.Energy -= item.CollisionAttack;
                     PlayerManager.Instance.Shield -= item.CollisionAttack;
+
+                    // animacja nie zachodzi dla powerupów albo astronautów
+                    if (item.CollisionAttack > 0)
+                    {
+                        PlayAnimation(collisionShake);
+                    }
                 }
 
                 if (item.Collision(ModelRenderer.CameraPosition) < item.CollisionRange * 3)
@@ -230,9 +238,6 @@ namespace RexMinus1
         public virtual bool CheckLose()
         {
             // sprawdzenie warunków przegranej
-            if (PlayerManager.Instance.Energy <= 0.05)
-                return true;
-
             if (PlayerManager.Instance.Heat >= 0.95)
                 return true;
 

@@ -10,16 +10,19 @@ namespace ConsoleGameEngine
 
         public int Smooth { get; set; }
 
+        private bool isRepeat;
+
         private int currentFrame = 0;
 
         private List<int> movementsX;
         private List<int> movementsY;
 
-        public ShakeAnimation(int intensityX, int intensityY, int speed)
+        public ShakeAnimation(int intensityX, int intensityY, int speed, bool repeat)
         {
             IntensityX = intensityX;
             IntensityY = intensityY;
             Smooth = speed;
+            isRepeat = repeat;
 
             movementsX = new List<int>();
             movementsY = new List<int>();
@@ -44,13 +47,21 @@ namespace ConsoleGameEngine
                     for (int j = IntensityY; j < Engine.WindowSize.Y - IntensityY; j++)
                     {
                         var g = Engine.PixelAt(new Point(i, j));
-                        Engine.SetPixel(new Point(i + movementsX[currentFrame], j + movementsY[currentFrame]), g.fg, g.bg, g.c);
+                        if (g != null)
+                            Engine.SetPixel(new Point(i + movementsX[currentFrame], j + movementsY[currentFrame]), g.fg, g.bg, g.c);
                     }
                 }
                 currentFrame++;
 
                 if (currentFrame >= Smooth)
+                {
                     currentFrame = 0;
+
+                    if (!isRepeat)
+                    {
+                        IsPaused = true;
+                    }
+                }
             }
         }
 

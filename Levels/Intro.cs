@@ -16,6 +16,13 @@ namespace RexMinus1.Levels
             PlayerManager.Instance.Shield = 1;
             PlayerManager.Instance.Energy = 1;
             PlayerManager.Instance.Heat = 0;
+            PlayerManager.Instance.HeatToAccelerate = 0.1f;
+            PlayerManager.Instance.HeatToShoot = 0.1f;
+            PlayerManager.Instance.Acceleration = 0.02f;
+            PlayerManager.Instance.Deceleration = 0.01f;
+            PlayerManager.Instance.EnergyToAccelerate = 0.15f;
+            PlayerManager.Instance.EnergyToDecelerate = 0.15f;
+            PlayerManager.Instance.EnergyToShoot = 0.2f;
 
             base.Start();
 
@@ -32,7 +39,7 @@ namespace RexMinus1.Levels
             //anim = new HorizontalTextAnimation() { Text = "Hello, world!", Origin = new Point(10, 20), Color = 7, Speed = 1 };
             //anim = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 5, Text = "PROXIMITY ALERT" };
             //anim = new NoiseAnimation() { Intensity = 200 };
-            anim = new ShakeAnimation(10, 10, 120);
+            anim = new ShakeAnimation(10, 10, 120, true);
             anim.IsPaused = false;
 
             base.Create();
