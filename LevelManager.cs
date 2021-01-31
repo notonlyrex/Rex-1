@@ -26,6 +26,14 @@ namespace RexMinus1
             CurrentLevel.Start();
         }
 
+        public void GoToNext()
+        {
+            if (levels.Count >= currentLevel + 1)
+            {
+                GoTo(currentLevel + 1);
+            }
+        }
+
         public void Initialize(ConsoleEngine engine, ModelRenderer modelRenderer, SpriteRenderer spriteRenderer, AnimationRenderer animationRenderer)
         {
             foreach (var item in levels)
