@@ -24,6 +24,9 @@ namespace RexMinus1
         private BorderedTextAnimation proximity;
         private BorderedTextAnimation overheat;
 
+        protected bool isStarting = false;
+        protected Timer startingTimer = new Timer() { Span = TimeSpan.FromSeconds(1) };
+
         public ModelRenderer ModelRenderer { get; set; }
 
         public ConsoleEngine Engine { get; set; }
@@ -131,6 +134,10 @@ namespace RexMinus1
 
             lowshield = new BorderedTextAnimation() { Color = 4, BackgroundColor = 0, Speed = 10, Text = "LOW SHIELD", Origin = new Point(28, 57) };
             AnimationRenderer.Add(lowshield);
+
+            isStarting = true;
+            startingTimer.Reset();
+            PlayAnimation(new StartingAnimation() { Speed = 4, ForegroundColor = 7, BackgroundColor = 0, Character = ConsoleCharacter.Dark });
         }
 
         public virtual void Create()
@@ -255,6 +262,11 @@ namespace RexMinus1
 
         public virtual void Update()
         {
+            if (isStarting && !startingTimer.Elapsed)
+            {
+                return;
+            }
+
             MoveObjects();
             CheckCollisions();
             RemoveObjects();

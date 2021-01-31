@@ -16,8 +16,6 @@ namespace RexMinus1.Levels
 
         public override void Start()
         {
-            PlayerManager.Instance.Shield = 1;
-            PlayerManager.Instance.Energy = 1;
             PlayerManager.Instance.Heat = 0;
             PlayerManager.Instance.HeatToAccelerate = 0.1f;
             PlayerManager.Instance.HeatToShoot = 0.1f;
