@@ -252,11 +252,11 @@
             WriteText(new Point(Origin.X - text.Length / 2, Origin.Y), text, color);
         }
 
-        public void WriteTextCenteredHorizontally(string text, int row, int color)
+        public void WriteTextCenteredHorizontally(string text, int row, int color, int bgcolor)
         {
             var Origin = new Point(WindowSize.X / 2, row);
 
-            WriteText(new Point(Origin.X - text.Length / 2, row), text, color);
+            WriteText(new Point(Origin.X - text.Length / 2, row), text, color, bgcolor);
         }
 
         /// <summary> Writes plain text to the buffer. </summary>

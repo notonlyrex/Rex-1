@@ -1,6 +1,7 @@
 ﻿using ConsoleGameEngine;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace RexMinus1.Levels
 {
@@ -12,6 +13,7 @@ namespace RexMinus1.Levels
 
         public override void Start()
         {
+            UseStartingAnimation = false;
             timer.Reset();
             base.Start();
         }
@@ -35,6 +37,8 @@ namespace RexMinus1.Levels
             anims.Add((new HorizontalTextAnimation() { Text = "Switching to the sensors package from 1981.", Origin = new Point(20, 40), Color = 15, Speed = 2, IsPaused = true }, null));
             anims.Add((new ScramblingAnimation() { Intensity = 50 }, "startgame"));
             anims.Add((null, null));
+
+            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/obj_mine.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
 
             base.Create();
         }
@@ -65,6 +69,8 @@ namespace RexMinus1.Levels
             {
                 LevelManager.GoToNext();
             }
+
+            models[0].RotationY += 0.05f;
 
             base.Update();
         }

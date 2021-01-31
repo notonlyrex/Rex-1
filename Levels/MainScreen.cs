@@ -1,6 +1,5 @@
 ﻿using ConsoleGameEngine;
 using System;
-using System.Numerics;
 
 namespace RexMinus1.Levels
 {
@@ -12,6 +11,8 @@ namespace RexMinus1.Levels
 
         public override void Start()
         {
+            UseStartingAnimation = false;
+
             timer.Reset();
 
             PlayerManager.Instance.Shield = 1;
@@ -36,8 +37,6 @@ namespace RexMinus1.Levels
 
         public override void Create()
         {
-            models.Add(new Model { Mesh = Mesh.LoadFromObj("Assets/obj_mine.obj"), Position = new Vector3(0, 0, 3), RotationX = 1.241f });
-
             timer = new Timer { Span = TimeSpan.FromSeconds(1) };
 
             anim = new ScramblingAnimation { Intensity = 200, IsPaused = false };
@@ -49,8 +48,6 @@ namespace RexMinus1.Levels
 
         public override void Update()
         {
-            models[0].RotationY += 0.05f;
-
             if (Engine.GetKeyDown(ConsoleKey.Spacebar))
             {
                 LevelManager.GoTo(LevelManager.Intro);
@@ -62,9 +59,11 @@ namespace RexMinus1.Levels
         public override void Render()
         {
             base.Render();
-            Engine.WriteTextCenteredHorizontally("Press SPACE to continue", 60, 8);
+            SpriteRenderer.RenderSingle(new Point(0, 0), Sprite.FromFile("Assets/sprite_logo.png"));
 
-            Engine.WriteFiglet(new Point(40, 20), "Rex -1", font, 15);
+            Engine.WriteTextCenteredHorizontally("Press SPACE to continue", 63, 15, 8);
+
+            //Engine.WriteFiglet(new Point(40, 20), "Rex -1", font, 15);
         }
     }
 }

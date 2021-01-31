@@ -105,8 +105,11 @@ namespace RexMinus1
             levelManager.Initialize(Engine, modelRenderer, spriteRenderer, animationRenderer);
 
             // przejście do pierwszego poziomu, ekranu powitalnego
-            //levelManager.GoTo(levelManager.Welcome);
-            levelManager.GoTo(6);
+#if !DEBUG
+            levelManager.GoTo(levelManager.Welcome);
+#else
+            levelManager.GoTo(0);
+#endif
         }
 
         // co każdą klatkę - tutaj obliczenia

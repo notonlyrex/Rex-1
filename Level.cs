@@ -36,6 +36,7 @@ namespace RexMinus1
         public LevelManager LevelManager { get; set; }
 
         public AnimationRenderer AnimationRenderer { get; set; }
+        public bool UseStartingAnimation { get; protected set; } = true;
 
         public void DrawDebug()
         {
@@ -141,7 +142,8 @@ namespace RexMinus1
 
             isStarting = true;
             startingTimer.Reset();
-            PlayAnimation(new StartingAnimation() { Speed = 4, ForegroundColor = 7, BackgroundColor = 0, Character = ConsoleCharacter.Dark });
+            if (UseStartingAnimation)
+                PlayAnimation(new StartingAnimation() { Speed = 4, ForegroundColor = 7, BackgroundColor = 0, Character = ConsoleCharacter.Dark });
         }
 
         public virtual void Create()
