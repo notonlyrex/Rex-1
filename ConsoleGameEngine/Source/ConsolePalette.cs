@@ -4,7 +4,7 @@ namespace ConsoleGameEngine
 {
     internal class ConsolePalette
     {
-        public static Dictionary<int, SdlSharp.Graphics.Color> Palette = new Dictionary<int, SdlSharp.Graphics.Color>();
+        public static Dictionary<int, Raylib_cs.Color> Palette = new Dictionary<int, Raylib_cs.Color>();
 
         public static int SetColor(int consoleColor, Color targetColor)
         {
@@ -13,7 +13,7 @@ namespace ConsoleGameEngine
 
         private static int SetColor(int color, uint r, uint g, uint b)
         {
-            Palette[color] = new SdlSharp.Graphics.Color((byte)r, (byte)g, (byte)b);
+            Palette[color] = new Raylib_cs.Color((int)r, (int)g, (int)b, 0);
 
             return 0;
         }

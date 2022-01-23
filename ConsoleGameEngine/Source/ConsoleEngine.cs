@@ -1,10 +1,7 @@
 ﻿namespace ConsoleGameEngine
 {
-    using SdlSharp;
-    using SdlSharp.Graphics;
-    using SdlSharp.Input;
+    using Raylib_cs;
     using System;
-    using System.Collections.Generic;
     using System.Text;
 
     /// <summary>
@@ -12,10 +9,6 @@
     /// </summary>
     public class ConsoleEngine
     {
-        public readonly Application App = new Application(Subsystems.Video);
-        private readonly Window window;
-        private readonly Renderer renderer;
-
         /// <summary> The current size of the font. </summary> <see cref="Point"/>
         public Point FontSize { get; private set; }
 
@@ -25,9 +18,6 @@
         private Glyph[,] GlyphBuffer { get; set; }
         private int Background { get; set; }
         public string Title { get; set; }
-
-        private Dictionary<Keycode, bool> KeysState = new Dictionary<Keycode, bool>();
-        private Font font;
 
         /// <summary> Creates a new ConsoleEngine. </summary>
         /// <param name="width">Target window width.</param>
@@ -39,17 +29,7 @@
             if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
             if (fontW < 1 || fontH < 1) throw new ArgumentOutOfRangeException();
 
-            Size windowSize = (width * fontW, height * fontH);
-            Rectangle windowRectangle = (Window.UndefinedWindowLocation, windowSize);
-            window = Window.Create(Title, windowRectangle, WindowFlags.Shown);
-            renderer = Renderer.Create(window, -1, RendererFlags.Accelerated);
-            renderer.Scale = (fontH, fontW);
-
-            SdlSharp.Native.TTF_Init();
-            font = Font.Create(@"Assets\OpenSans.ttf", 45);
-
-            Keyboard.KeyDown += (s, e) => KeysState[e.Keycode] = e.IsPressed;
-            Keyboard.KeyUp += (s, e) => KeysState[e.Keycode] = e.IsPressed;
+            Raylib.InitWindow(width, height, Title);
 
             WindowSize = new Point(width, height);
             FontSize = new Point(fontW, fontH);
@@ -129,24 +109,20 @@
         /// <summary> Blits the screenbuffer to the Console window. </summary>
         public void DisplayBuffer()
         {
-            renderer.DrawColor = ConsolePalette.Palette[Background];
-            renderer.Clear();
+            //Raylib.BeginDrawing();
+            Raylib.ClearBackground(ConsolePalette.Palette[Background]);
+            Raylib.BeginDrawing();
 
-            for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
-                for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
-                {
-                    if (GlyphBuffer[x, y].fg != 0)
-                    {
-                        renderer.DrawColor = ConsolePalette.Palette[GlyphBuffer[x, y].fg];
-                        renderer.DrawPoint(new SdlSharp.Point(x, y));
-                    }
-                }
+            //for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
+            //    for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
+            //    {
+            //        if (GlyphBuffer[x, y].fg != 0)
+            //        {
+            //            Raylib.DrawPixel(x, y, ConsolePalette.Palette[GlyphBuffer[x, y].fg]);
+            //        }
+            //    }
 
-            var sunflowers = font.RenderSolid("HELLO, WORLD!", Colors.Red);
-
-            var t = renderer.CreateTexture(sunflowers);
-            renderer.Copy(t);
-            renderer.Present();
+            Raylib.EndDrawing();
 
             //window.Surface.FillRectangle(new SdlSharp.Rectangle(new SdlSharp.Point(0, 0), new Size(20, 20)), PixelColor);
         }
@@ -572,21 +548,17 @@
         /// <summary> Checks if specified key is pressed. </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>True if key is pressed</returns>
-        public bool GetKey(Keycode key)
+        public bool GetKey(Raylib_cs.KeyboardKey key)
         {
-            bool result = false;
-            KeysState.TryGetValue(key, out result);
-            return result;
+            return Raylib.IsKeyDown(key);
         }
 
         /// <summary> Checks if specified key is pressed down. </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>True if key is down</returns>
-        public bool GetKeyDown(Keycode key)
+        public bool GetKeyDown(KeyboardKey key)
         {
-            bool result = false;
-            KeysState.TryGetValue(key, out result);
-            return result;
+            return Raylib.IsKeyDown(key);
         }
     }
 }

@@ -8,8 +8,8 @@
   <ItemGroup>
     <PackageReference Include="NAudio" Version="1.10.0" />
     <PackageReference Include="NAudio.Vorbis" Version="1.2.0" />
+    <PackageReference Include="Raylib-cs" Version="3.7.0.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
-    <PackageReference Include="SdlSharp" Version="0.9.3-alpha" />
   </ItemGroup>
 
 </Project>

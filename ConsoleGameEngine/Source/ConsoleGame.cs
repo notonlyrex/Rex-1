@@ -1,5 +1,6 @@
 ﻿namespace ConsoleGameEngine
 {
+    using Raylib_cs;
     using System;
     using System.Linq;
     using System.Threading;
@@ -58,7 +59,6 @@
             while (Running)
             {
                 CheckForExit();
-                Engine.App.DispatchEvent();
             }
         }
 
@@ -138,7 +138,7 @@
 
         private void CheckForExit()
         {
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Delete))
+            if (Raylib.WindowShouldClose())
             {
                 Running = false;
             }

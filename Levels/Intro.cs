@@ -65,7 +65,7 @@ namespace RexMinus1.Levels
                 }
             }
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Space))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_SPACE))
             {
                 LevelManager.GoToNext();
             }

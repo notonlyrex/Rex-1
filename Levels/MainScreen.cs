@@ -48,7 +48,7 @@ namespace RexMinus1.Levels
 
         public override void Update()
         {
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Space))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_SPACE))
             {
                 LevelManager.GoTo(LevelManager.Intro);
             }

@@ -87,17 +87,17 @@ namespace RexMinus1.Levels
             }
 
             // zmiana pozycji gracza
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Left) || Engine.GetKeyDown(SdlSharp.Input.Keycode.a))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_LEFT) || Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_A))
             {
                 ModelRenderer.UpdateCameraRotation(-0.05f);
             }
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Right) || Engine.GetKeyDown(SdlSharp.Input.Keycode.d))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_RIGHT) || Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_D))
             {
                 ModelRenderer.UpdateCameraRotation(0.05f);
             }
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Up) || Engine.GetKeyDown(SdlSharp.Input.Keycode.w))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_UP) || Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_W))
             {
                 if (PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToAccelerate)
                 {
@@ -107,7 +107,7 @@ namespace RexMinus1.Levels
                 }
             }
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Down) || Engine.GetKeyDown(SdlSharp.Input.Keycode.s))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_DOWN) || Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_S))
             {
                 if (PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToAccelerate)
                 {
@@ -117,22 +117,22 @@ namespace RexMinus1.Levels
                 }
             }
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.q))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_Q))
             {
                 ModelRenderer.UpdateCameraMovement(0.0f, -0.1f);
             }
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.e))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_E))
             {
                 ModelRenderer.UpdateCameraMovement(0.0f, 0.1f);
             }
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.r))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_R))
             {
                 ModelRenderer.UpdateFOV(0.1f);
             }
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.f))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_F))
             {
                 ModelRenderer.UpdateFOV(-0.1f);
             }
@@ -141,7 +141,7 @@ namespace RexMinus1.Levels
             ModelRenderer.UpdateCameraMovement(speed, 0.0f);
 
             // strzał
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Space) && PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToShoot)
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_SPACE) && PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToShoot)
             {
                 // animacja lasera
                 laser.Reset();

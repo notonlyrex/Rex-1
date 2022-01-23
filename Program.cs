@@ -60,6 +60,7 @@ namespace RexMinus1
         {
             // zwalnianie podsystemu audio
             AudioPlaybackEngine.Instance.Dispose();
+            Raylib_cs.Raylib.CloseWindow();
             Environment.Exit(0);
         }
 
@@ -119,17 +120,14 @@ namespace RexMinus1
         {
             levelManager.CurrentLevel.Update();
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.F1))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_F1))
                 drawDebug = !drawDebug;
 
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Escape))
-                Exit();
-
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Escape))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_ESCAPE))
                 Exit();
 
 #if DEBUG
-            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.F2))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_F2))
                 levelManager.GoToNext();
 #endif
         }
