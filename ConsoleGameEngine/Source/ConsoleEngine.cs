@@ -1,6 +1,10 @@
 ﻿namespace ConsoleGameEngine
 {
+    using SdlSharp;
+    using SdlSharp.Graphics;
+    using SdlSharp.Input;
     using System;
+    using System.Collections.Generic;
     using System.Text;
 
     /// <summary>
@@ -8,15 +12,9 @@
     /// </summary>
     public class ConsoleEngine
     {
-        // pekare för ConsoleHelper-anrop
-        private readonly IntPtr stdInputHandle = NativeMethods.GetStdHandle(-10);
-
-        private readonly IntPtr stdOutputHandle = NativeMethods.GetStdHandle(-11);
-        private readonly IntPtr stdErrorHandle = NativeMethods.GetStdHandle(-12);
-        private readonly IntPtr consoleHandle = NativeMethods.GetConsoleWindow();
-
-        /// <summary> The active color palette. </summary> <see cref="Color"/>
-        public Color[] Palette { get; private set; }
+        public readonly Application App = new Application(Subsystems.Video);
+        private readonly Window window;
+        private readonly Renderer renderer;
 
         /// <summary> The current size of the font. </summary> <see cref="Point"/>
         public Point FontSize { get; private set; }
@@ -24,13 +22,12 @@
         /// <summary> The dimensions of the window in characters. </summary> <see cref="Point"/>
         public Point WindowSize { get; private set; }
 
-        /*private char[,] CharBuffer { get; set; }
-		private int[,] ColorBuffer { get; set; }
-		private int[,] BackgroundBuffer { get; set; }*/
         private Glyph[,] GlyphBuffer { get; set; }
         private int Background { get; set; }
-        private ConsoleBuffer ConsoleBuffer { get; set; }
-        private bool IsBorderless { get; set; }
+        public string Title { get; set; }
+
+        private Dictionary<Keycode, bool> KeysState = new Dictionary<Keycode, bool>();
+        private Font font;
 
         /// <summary> Creates a new ConsoleEngine. </summary>
         /// <param name="width">Target window width.</param>
@@ -42,40 +39,27 @@
             if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
             if (fontW < 1 || fontH < 1) throw new ArgumentOutOfRangeException();
 
-            Console.Title = "Untitled console application";
-            Console.CursorVisible = false;
+            Size windowSize = (width * fontW, height * fontH);
+            Rectangle windowRectangle = (Window.UndefinedWindowLocation, windowSize);
+            window = Window.Create(Title, windowRectangle, WindowFlags.Shown);
+            renderer = Renderer.Create(window, -1, RendererFlags.Accelerated);
+            renderer.Scale = (fontH, fontW);
 
-            //sets console location to 0,0 to try and avoid the error where the console is to big
-            Console.SetWindowPosition(0, 0);
+            SdlSharp.Native.TTF_Init();
+            font = Font.Create(@"Assets\OpenSans.ttf", 45);
 
-            // sätter fönstret och bufferns storlek
-            // buffern måste sättas efter fönsret, eftersom den aldrig får vara mindre än skärmen
-            Console.SetWindowSize(width, height);
-            Console.SetBufferSize(width, height);
-
-            ConsoleBuffer = new ConsoleBuffer(width, height);
+            Keyboard.KeyDown += (s, e) => KeysState[e.Keycode] = e.IsPressed;
+            Keyboard.KeyUp += (s, e) => KeysState[e.Keycode] = e.IsPressed;
 
             WindowSize = new Point(width, height);
             FontSize = new Point(fontW, fontH);
-
-            /*CharBuffer = new char[width, height];
-			ColorBuffer = new int[width, height];
-			BackgroundBuffer = new int[width, height];*/
 
             GlyphBuffer = new Glyph[width, height];
             for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
                 for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
                     GlyphBuffer[x, y] = new Glyph();
 
-            SetBackground(0);
             SetPalette(Palettes.Default);
-
-            // Stänger av alla standard ConsoleInput metoder (Quick-edit etc)
-            NativeMethods.SetConsoleMode(stdInputHandle, 0x0080);
-
-            // Sätter fontstorlek och tvingar Raster (Terminal) / Consolas
-            // Detta måste göras efter SetBufferSize, annars ger den en IOException
-            ConsoleFont.SetFont(stdOutputHandle, (short)fontW, (short)fontH);
         }
 
         // Rita
@@ -90,14 +74,11 @@
             if (selectedPoint.X >= GlyphBuffer.GetLength(0) || selectedPoint.Y >= GlyphBuffer.GetLength(1)
                 || selectedPoint.X < 0 || selectedPoint.Y < 0) return;
 
-            /*CharBuffer[selectedPoint.X, selectedPoint.Y] = character;
-			ColorBuffer[selectedPoint.X, selectedPoint.Y] = fgColor;
-			BackgroundBuffer[selectedPoint.X, selectedPoint.Y] = bgColor;*/
             GlyphBuffer[selectedPoint.X, selectedPoint.Y].set(character, fgColor, bgColor);
         }
 
         /// <summary>
-        /// returns gylfh at point given
+        /// returns glyph at point given
         /// </summary>
         /// <param name="selectedPoint"></param>
         /// <returns></returns>
@@ -113,9 +94,6 @@
         /// <exception cref="ArgumentException"/> <exception cref="ArgumentNullException"/>
         public void SetPalette(Color[] colors)
         {
-            if (colors.Length > 16) throw new ArgumentException("Windows command prompt only support 16 colors.");
-            Palette = colors ?? throw new ArgumentNullException();
-
             for (int i = 0; i < colors.Length; i++)
             {
                 ConsolePalette.SetColor(i, colors[i]);
@@ -141,8 +119,8 @@
         public void ClearBuffer()
         {
             /*Array.Clear(CharBuffer, 0, CharBuffer.Length);
-			Array.Clear(ColorBuffer, 0, ColorBuffer.Length);
-			Array.Clear(BackgroundBuffer, 0, BackgroundBuffer.Length);*/
+            Array.Clear(ColorBuffer, 0, ColorBuffer.Length);
+            Array.Clear(BackgroundBuffer, 0, BackgroundBuffer.Length);*/
             for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
                 for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
                     GlyphBuffer[x, y] = new Glyph();
@@ -151,34 +129,26 @@
         /// <summary> Blits the screenbuffer to the Console window. </summary>
         public void DisplayBuffer()
         {
-            ConsoleBuffer.SetBuffer(GlyphBuffer, Background);
-            ConsoleBuffer.Blit();
-        }
+            renderer.DrawColor = ConsolePalette.Palette[Background];
+            renderer.Clear();
 
-        /// <summary> Sets the window to borderless mode. </summary>
-        public void Borderless()
-        {
-            IsBorderless = true;
+            for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
+                for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
+                {
+                    if (GlyphBuffer[x, y].fg != 0)
+                    {
+                        renderer.DrawColor = ConsolePalette.Palette[GlyphBuffer[x, y].fg];
+                        renderer.DrawPoint(new SdlSharp.Point(x, y));
+                    }
+                }
 
-            int GWL_STYLE = -16;                // hex konstant för stil-förändring
-            int WS_BORDERLESS = 0x00080000;     // helt borderless
+            var sunflowers = font.RenderSolid("HELLO, WORLD!", Colors.Red);
 
-            NativeMethods.Rect rect = new NativeMethods.Rect();
-            NativeMethods.Rect desktopRect = new NativeMethods.Rect();
+            var t = renderer.CreateTexture(sunflowers);
+            renderer.Copy(t);
+            renderer.Present();
 
-            NativeMethods.GetWindowRect(consoleHandle, ref rect);
-            IntPtr desktopHandle = NativeMethods.GetDesktopWindow();
-            NativeMethods.MapWindowPoints(desktopHandle, consoleHandle, ref rect, 2);
-            NativeMethods.GetWindowRect(desktopHandle, ref desktopRect);
-
-            Point wPos = new Point(
-                (desktopRect.Right / 2) - ((WindowSize.X * FontSize.X) / 2),
-                (desktopRect.Bottom / 2) - ((WindowSize.Y * FontSize.Y) / 2));
-
-            NativeMethods.SetWindowLong(consoleHandle, GWL_STYLE, WS_BORDERLESS);
-            NativeMethods.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right - 8, rect.Bottom - 8, 0x0040);
-
-            NativeMethods.DrawMenuBar(consoleHandle);
+            //window.Surface.FillRectangle(new SdlSharp.Rectangle(new SdlSharp.Point(0, 0), new Size(20, 20)), PixelColor);
         }
 
         #region Primitives
@@ -599,102 +569,24 @@
 
         // Input
 
-        /// <summary>Checks to see if the console is in focus </summary>
-        /// <returns>True if Console is in focus</returns>
-        private bool ConsoleFocused()
-        {
-            return NativeMethods.GetConsoleWindow() == NativeMethods.GetForegroundWindow();
-        }
-
         /// <summary> Checks if specified key is pressed. </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>True if key is pressed</returns>
-        public bool GetKey(ConsoleKey key)
+        public bool GetKey(Keycode key)
         {
-            short s = NativeMethods.GetAsyncKeyState((int)key);
-            return (s & 0x8000) > 0 && ConsoleFocused();
-        }
-
-        /// <summary> Checks if specified keyCode is pressed. </summary>
-        /// <param name="virtualkeyCode">keycode to check</param>
-        /// <returns>True if key is pressed</returns>
-        public bool GetKey(int virtualkeyCode)
-        {
-            short s = NativeMethods.GetAsyncKeyState(virtualkeyCode);
-            return (s & 0x8000) > 0 && ConsoleFocused();
+            bool result = false;
+            KeysState.TryGetValue(key, out result);
+            return result;
         }
 
         /// <summary> Checks if specified key is pressed down. </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>True if key is down</returns>
-        public bool GetKeyDown(ConsoleKey key)
+        public bool GetKeyDown(Keycode key)
         {
-            int s = Convert.ToInt32(NativeMethods.GetAsyncKeyState((int)key));
-            return (s == -32767) && ConsoleFocused();
-        }
-
-        /// <summary> Checks if specified keyCode is pressed down. </summary>
-        /// <param name="virtualkeyCode">keycode to check</param>
-        /// <returns>True if key is down</returns>
-        public bool GetKeyDown(int virtualkeyCode)
-        {
-            int s = Convert.ToInt32(NativeMethods.GetAsyncKeyState(virtualkeyCode));
-            return (s == -32767) && ConsoleFocused();
-        }
-
-        /// <summary> Checks if left mouse button is pressed down. </summary>
-        /// <returns>True if left mouse button is down</returns>
-        public bool GetMouseLeft()
-        {
-            short s = NativeMethods.GetAsyncKeyState(0x01);
-            return (s & 0x8000) > 0 && ConsoleFocused();
-        }
-
-        /// <summary> Checks if right mouse button is pressed down. </summary>
-        /// <returns>True if right mouse button is down</returns>
-        public bool GetMouseRight()
-        {
-            short s = NativeMethods.GetAsyncKeyState(0x02);
-            return (s & 0x8000) > 0 && ConsoleFocused();
-        }
-
-        /// <summary> Checks if middle mouse button is pressed down. </summary>
-        /// <returns>True if middle mouse button is down</returns>
-        public bool GetMouseMiddle()
-        {
-            short s = NativeMethods.GetAsyncKeyState(0x04);
-            return (s & 0x8000) > 0 && ConsoleFocused();
-        }
-
-        /// <summary> Gets the mouse position. </summary>
-        /// <returns>The mouse's position in character-space.</returns>
-        /// <exception cref="Exception"/>
-        public Point GetMousePos()
-        {
-            NativeMethods.Rect r = new NativeMethods.Rect();
-            NativeMethods.GetWindowRect(consoleHandle, ref r);
-
-            if (NativeMethods.GetCursorPos(out NativeMethods.POINT p))
-            {
-                Point point = new Point();
-                if (!IsBorderless)
-                {
-                    p.Y -= 29;
-                    point = new Point(
-                        (int)Math.Floor(((p.X - r.Left) / (float)FontSize.X) - 0.5f),
-                        (int)Math.Floor(((p.Y - r.Top) / (float)FontSize.Y))
-                    );
-                }
-                else
-                {
-                    point = new Point(
-                        (int)Math.Floor(((p.X - r.Left) / (float)FontSize.X)),
-                        (int)Math.Floor(((p.Y - r.Top) / (float)FontSize.Y))
-                    );
-                }
-                return new Point(Utility.Clamp(point.X, 0, WindowSize.X - 1), Utility.Clamp(point.Y, 0, WindowSize.Y - 1));
-            }
-            throw new Exception();
+            bool result = false;
+            KeysState.TryGetValue(key, out result);
+            return result;
         }
     }
 }

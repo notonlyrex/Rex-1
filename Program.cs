@@ -68,7 +68,7 @@ namespace RexMinus1
         {
             // paleta domyślna
             Engine.SetPalette(Palettes.Default);
-            Console.Title = "Rex -1";
+            Engine.Title = "Rex -1";
 
             // docelowy framerate
             TargetFramerate = 30;
@@ -119,17 +119,17 @@ namespace RexMinus1
         {
             levelManager.CurrentLevel.Update();
 
-            if (Engine.GetKeyDown(ConsoleKey.F1))
+            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.F1))
                 drawDebug = !drawDebug;
 
-            if (Engine.GetKeyDown(ConsoleKey.Escape))
+            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Escape))
                 Exit();
 
-            if (Engine.GetKeyDown(ConsoleKey.Escape))
+            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.Escape))
                 Exit();
 
 #if DEBUG
-            if (Engine.GetKeyDown(ConsoleKey.F2))
+            if (Engine.GetKeyDown(SdlSharp.Input.Keycode.F2))
                 levelManager.GoToNext();
 #endif
         }

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rex-1", "Rex-1.csproj", "{BBE3FD46-6982-4362-9945-211D72174376}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleGameEngine", "ConsoleGameEngine\Source\ConsoleGameEngine.csproj", "{5090C8EE-6200-49BA-91AB-BF7ED2E90227}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NGE", "ConsoleGameEngine\Source\NGE.csproj", "{5090C8EE-6200-49BA-91AB-BF7ED2E90227}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

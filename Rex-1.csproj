@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
     <RootNamespace>RexMinus1</RootNamespace>
   </PropertyGroup>
 
@@ -13,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="ConsoleGameEngine\Source\ConsoleGameEngine.csproj" />
+    <ProjectReference Include="ConsoleGameEngine\Source\NGE.csproj" />
   </ItemGroup>
 
   <ItemGroup>
