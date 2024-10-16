@@ -1,11 +1,11 @@
 ﻿namespace ConsoleGameEngine
 {
-    using SdlSharp;
-    using SdlSharp.Graphics;
-    using SdlSharp.Input;
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using SdlSharp;
+    using SdlSharp.Graphics;
+    using SdlSharp.Input;
 
     /// <summary>
     /// Class for Drawing to a console window.
@@ -36,8 +36,10 @@
         /// <param name="fontH">Target font height.</param>
         public ConsoleEngine(int width, int height, int fontW, int fontH)
         {
-            if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
-            if (fontW < 1 || fontH < 1) throw new ArgumentOutOfRangeException();
+            if (width < 1 || height < 1)
+                throw new ArgumentOutOfRangeException();
+            if (fontW < 1 || fontH < 1)
+                throw new ArgumentOutOfRangeException();
 
             Size windowSize = (width * fontW, height * fontH);
             Rectangle windowRectangle = (Window.UndefinedWindowLocation, windowSize);
@@ -56,8 +58,8 @@
 
             GlyphBuffer = new Glyph[width, height];
             for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
-                for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
-                    GlyphBuffer[x, y] = new Glyph();
+            for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
+                GlyphBuffer[x, y] = new Glyph();
 
             SetPalette(Palettes.Default);
         }
@@ -71,8 +73,13 @@
         //new Draw method, which supports background
         public void SetPixel(Point selectedPoint, int fgColor, int bgColor, char character)
         {
-            if (selectedPoint.X >= GlyphBuffer.GetLength(0) || selectedPoint.Y >= GlyphBuffer.GetLength(1)
-                || selectedPoint.X < 0 || selectedPoint.Y < 0) return;
+            if (
+                selectedPoint.X >= GlyphBuffer.GetLength(0)
+                || selectedPoint.Y >= GlyphBuffer.GetLength(1)
+                || selectedPoint.X < 0
+                || selectedPoint.Y < 0
+            )
+                return;
 
             GlyphBuffer[selectedPoint.X, selectedPoint.Y].set(character, fgColor, bgColor);
         }
@@ -84,9 +91,15 @@
         /// <returns></returns>
         public Glyph PixelAt(Point selectedPoint)
         {
-            if (selectedPoint.X > 0 && selectedPoint.X < GlyphBuffer.GetLength(0) && selectedPoint.Y > 0 && selectedPoint.Y < GlyphBuffer.GetLength(1))
+            if (
+                selectedPoint.X > 0
+                && selectedPoint.X < GlyphBuffer.GetLength(0)
+                && selectedPoint.Y > 0
+                && selectedPoint.Y < GlyphBuffer.GetLength(1)
+            )
                 return GlyphBuffer[selectedPoint.X, selectedPoint.Y];
-            else return null;
+            else
+                return null;
         }
 
         /// <summary> Sets the console's color palette </summary>
@@ -104,7 +117,8 @@
         /// <param name="color">Index of background color in palette.</param>
         public void SetBackground(int color = 0)
         {
-            if (color > 16 || color < 0) throw new IndexOutOfRangeException();
+            if (color > 16 || color < 0)
+                throw new IndexOutOfRangeException();
             Background = color;
         }
 
@@ -122,8 +136,8 @@
             Array.Clear(ColorBuffer, 0, ColorBuffer.Length);
             Array.Clear(BackgroundBuffer, 0, BackgroundBuffer.Length);*/
             for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
-                for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
-                    GlyphBuffer[x, y] = new Glyph();
+            for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
+                GlyphBuffer[x, y] = new Glyph();
         }
 
         /// <summary> Blits the screenbuffer to the Console window. </summary>
@@ -133,16 +147,16 @@
             renderer.Clear();
 
             for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
-                for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
+            for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
+            {
+                if (GlyphBuffer[x, y].fg != 0)
                 {
-                    if (GlyphBuffer[x, y].fg != 0)
-                    {
-                        renderer.DrawColor = ConsolePalette.Palette[GlyphBuffer[x, y].fg];
-                        renderer.DrawPoint(new SdlSharp.Point(x, y));
-                    }
+                    renderer.DrawColor = ConsolePalette.Palette[GlyphBuffer[x, y].fg];
+                    renderer.DrawPoint(new SdlSharp.Point(x, y));
                 }
+            }
 
-            var sunflowers = font.RenderSolid("HELLO, WORLD!", Colors.Red);
+            var sunflowers = font.RenderSolid(" ", Colors.Red);
 
             var t = renderer.CreateTexture(sunflowers);
             renderer.Copy(t);
@@ -167,7 +181,12 @@
         /// <param name="fgColor">The foreground color index.</param>
         /// <param name="bgColor">The background color index.</param>
         /// <param name="c">The character that should be drawn with.</param>
-        public void SetPixel(Point v, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void SetPixel(
+            Point v,
+            int fgColor,
+            int bgColor,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             SetPixel(v, fgColor, bgColor, (char)c);
         }
@@ -190,14 +209,34 @@
         {
             for (int i = 1; i < end.X - pos.X; i++)
             {
-                SetPixel(new Point(pos.X + i, pos.Y), fgColor, bgColor, ConsoleCharacter.BoxDrawingL_H);
-                SetPixel(new Point(pos.X + i, end.Y), fgColor, bgColor, ConsoleCharacter.BoxDrawingL_H);
+                SetPixel(
+                    new Point(pos.X + i, pos.Y),
+                    fgColor,
+                    bgColor,
+                    ConsoleCharacter.BoxDrawingL_H
+                );
+                SetPixel(
+                    new Point(pos.X + i, end.Y),
+                    fgColor,
+                    bgColor,
+                    ConsoleCharacter.BoxDrawingL_H
+                );
             }
 
             for (int i = 1; i < end.Y - pos.Y; i++)
             {
-                SetPixel(new Point(pos.X, pos.Y + i), fgColor, bgColor, ConsoleCharacter.BoxDrawingL_V);
-                SetPixel(new Point(end.X, pos.Y + i), fgColor, bgColor, ConsoleCharacter.BoxDrawingL_V);
+                SetPixel(
+                    new Point(pos.X, pos.Y + i),
+                    fgColor,
+                    bgColor,
+                    ConsoleCharacter.BoxDrawingL_V
+                );
+                SetPixel(
+                    new Point(end.X, pos.Y + i),
+                    fgColor,
+                    bgColor,
+                    ConsoleCharacter.BoxDrawingL_V
+                );
             }
 
             SetPixel(new Point(pos.X, pos.Y), fgColor, bgColor, ConsoleCharacter.BoxDrawingL_DR);
@@ -262,8 +301,10 @@
         /// <see cref="FigletFont"/>
         public void WriteFiglet(Point pos, string text, FigletFont font, int fgColor, int bgColor)
         {
-            if (text == null) throw new ArgumentNullException(nameof(text));
-            if (Encoding.UTF8.GetByteCount(text) != text.Length) throw new ArgumentException("String contains non-ascii characters");
+            if (text == null)
+                throw new ArgumentNullException(nameof(text));
+            if (Encoding.UTF8.GetByteCount(text) != text.Length)
+                throw new ArgumentException("String contains non-ascii characters");
 
             int sWidth = FigletFont.GetStringWidth(font, text);
 
@@ -279,7 +320,12 @@
                     {
                         if (fragment[f] != ' ')
                         {
-                            SetPixel(new Point(pos.X + runningWidthTotal + f, pos.Y + line - 1), fgColor, bgColor, fragment[f]);
+                            SetPixel(
+                                new Point(pos.X + runningWidthTotal + f, pos.Y + line - 1),
+                                fgColor,
+                                bgColor,
+                                fragment[f]
+                            );
                         }
                     }
                     runningWidthTotal += fragment.Length;
@@ -293,7 +339,13 @@
         /// <param name="color">Specified color index.</param>
         /// <param name="arc">angle in degrees, 360 if not specified.</param>
         /// <param name="c">Character to use.</param>
-        public void Arc(Point pos, int radius, int color, int arc = 360, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Arc(
+            Point pos,
+            int radius,
+            int color,
+            int arc = 360,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             Arc(pos, radius, color, Background, arc, c);
         }
@@ -305,7 +357,14 @@
         /// <param name="bgColor">Specified background color index.</param>
         /// <param name="arc">angle in degrees, 360 if not specified.</param>
         /// <param name="c">Character to use.</param>
-        public void Arc(Point pos, int radius, int fgColor, int bgColor, int arc = 360, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Arc(
+            Point pos,
+            int radius,
+            int fgColor,
+            int bgColor,
+            int arc = 360,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             for (int a = 0; a < arc; a++)
             {
@@ -324,7 +383,14 @@
         /// <param name="arc">End angle in degrees.</param>
         /// <param name="color">Specified color index.</param>
         /// <param name="c">Character to use.</param>
-        public void SemiCircle(Point pos, int radius, int start, int arc, int color, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void SemiCircle(
+            Point pos,
+            int radius,
+            int start,
+            int arc,
+            int color,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             SemiCircle(pos, radius, start, arc, color, Background, c);
         }
@@ -337,7 +403,15 @@
         /// <param name="fgColor">Specified color index.</param>
         /// <param name="bgColor">Specified background color index.</param>
         /// <param name="c">Character to use.</param>
-        public void SemiCircle(Point pos, int radius, int start, int arc, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void SemiCircle(
+            Point pos,
+            int radius,
+            int start,
+            int arc,
+            int fgColor,
+            int bgColor,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             for (int a = start; a > -arc + start; a--)
             {
@@ -359,7 +433,12 @@
         /// <param name="end">Point to end line at.</param>
         /// <param name="color">Color to draw with.</param>
         /// <param name="c">Character to use.</param>
-        public void Line(Point start, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Line(
+            Point start,
+            Point end,
+            int color,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             Line(start, end, color, Background, c);
         }
@@ -372,13 +451,29 @@
         /// <param name="fgColor">Color to draw with.</param>
         /// <param name="bgColor">Color to draw the background with.</param>
         /// <param name="c">Character to use.</param>
-        public void Line(Point start, Point end, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Line(
+            Point start,
+            Point end,
+            int fgColor,
+            int bgColor,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             Point delta = end - start;
-            Point da = Point.Zero, db = Point.Zero;
-            if (delta.X < 0) da.X = -1; else if (delta.X > 0) da.X = 1;
-            if (delta.Y < 0) da.Y = -1; else if (delta.Y > 0) da.Y = 1;
-            if (delta.X < 0) db.X = -1; else if (delta.X > 0) db.X = 1;
+            Point da = Point.Zero,
+                db = Point.Zero;
+            if (delta.X < 0)
+                da.X = -1;
+            else if (delta.X > 0)
+                da.X = 1;
+            if (delta.Y < 0)
+                da.Y = -1;
+            else if (delta.Y > 0)
+                da.Y = 1;
+            if (delta.X < 0)
+                db.X = -1;
+            else if (delta.X > 0)
+                db.X = 1;
             int longest = Math.Abs(delta.X);
             int shortest = Math.Abs(delta.Y);
 
@@ -386,7 +481,10 @@
             {
                 longest = Math.Abs(delta.Y);
                 shortest = Math.Abs(delta.X);
-                if (delta.Y < 0) db.Y = -1; else if (delta.Y > 0) db.Y = 1;
+                if (delta.Y < 0)
+                    db.Y = -1;
+                else if (delta.Y > 0)
+                    db.Y = 1;
                 db.X = 0;
             }
 
@@ -413,7 +511,12 @@
         /// <param name="end">Bottom Right corner of rectangle.</param>
         /// <param name="color">Color to draw with.</param>
         /// <param name="c">Character to use.</param>
-        public void Rectangle(Point pos, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Rectangle(
+            Point pos,
+            Point end,
+            int color,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             Rectangle(pos, end, color, Background, c);
         }
@@ -424,7 +527,13 @@
         /// <param name="fgColor">Color to draw with.</param>
         /// <param name="bgColor">Color to draw to the background with.</param>
         /// <param name="c">Character to use.</param>
-        public void Rectangle(Point pos, Point end, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Rectangle(
+            Point pos,
+            Point end,
+            int fgColor,
+            int bgColor,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             for (int i = 0; i < end.X - pos.X; i++)
             {
@@ -455,7 +564,13 @@
         /// <param name="fgColor">Color to draw with.</param>
         /// <param name="bgColor">Color to draw the background with.</param>
         /// <param name="c">Character to use.</param>
-        public void Fill(Point a, Point b, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Fill(
+            Point a,
+            Point b,
+            int fgColor,
+            int bgColor,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             for (int y = a.Y; y < b.Y; y++)
             {
@@ -472,7 +587,13 @@
         /// <param name="spacing">the spacing until next line</param>
         /// <param name="color">Color to draw with.</param>
         /// <param name="c">Character to use.</param>
-        public void Grid(Point a, Point b, int spacing, int color, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Grid(
+            Point a,
+            Point b,
+            int spacing,
+            int color,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             Grid(a, b, spacing, color, Background, c);
         }
@@ -484,7 +605,14 @@
         /// <param name="fgColor">Color to draw with.</param>
         /// <param name="bgColor">Color to draw the background with.</param>
         /// <param name="c">Character to use.</param>
-        public void Grid(Point a, Point b, int spacing, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+        public void Grid(
+            Point a,
+            Point b,
+            int spacing,
+            int fgColor,
+            int bgColor,
+            ConsoleCharacter c = ConsoleCharacter.Full
+        )
         {
             for (int y = a.Y; y < b.Y / spacing; y++)
             {
@@ -502,7 +630,13 @@
         /// <param name="c">Point C.</param>
         /// <param name="color">Color to draw with.</param>
         /// <param name="character">Character to use.</param>
-        public void Triangle(Point a, Point b, Point c, int color, ConsoleCharacter character = ConsoleCharacter.Full)
+        public void Triangle(
+            Point a,
+            Point b,
+            Point c,
+            int color,
+            ConsoleCharacter character = ConsoleCharacter.Full
+        )
         {
             Triangle(a, b, c, color, Background, character);
         }
@@ -514,7 +648,14 @@
         /// <param name="fgColor">Color to draw with.</param>
         /// <param name="bgColor">Color to draw to the background with.</param>
         /// <param name="character">Character to use.</param>
-        public void Triangle(Point a, Point b, Point c, int fgColor, int bgColor, ConsoleCharacter character = ConsoleCharacter.Full)
+        public void Triangle(
+            Point a,
+            Point b,
+            Point c,
+            int fgColor,
+            int bgColor,
+            ConsoleCharacter character = ConsoleCharacter.Full
+        )
         {
             Line(a, b, fgColor, bgColor, character);
             Line(b, c, fgColor, bgColor, character);
@@ -529,7 +670,13 @@
         /// <param name="c">Point C.</param>
         /// <param name="color">Color to draw with.</param>
         /// <param name="character">Character to use.</param>
-        public void FillTriangle(Point a, Point b, Point c, int color, ConsoleCharacter character = ConsoleCharacter.Full)
+        public void FillTriangle(
+            Point a,
+            Point b,
+            Point c,
+            int color,
+            ConsoleCharacter character = ConsoleCharacter.Full
+        )
         {
             FillTriangle(a, b, c, color, Background, character);
         }
@@ -541,10 +688,23 @@
         /// <param name="fgColor">Color to draw with.</param>
         /// <param name="bgColor">Color to draw to the background with.</param>
         /// <param name="character">Character to use.</param>
-        public void FillTriangle(Point a, Point b, Point c, int fgColor, int bgColor, ConsoleCharacter character = ConsoleCharacter.Full)
+        public void FillTriangle(
+            Point a,
+            Point b,
+            Point c,
+            int fgColor,
+            int bgColor,
+            ConsoleCharacter character = ConsoleCharacter.Full
+        )
         {
-            Point min = new Point(Math.Min(Math.Min(a.X, b.X), c.X), Math.Min(Math.Min(a.Y, b.Y), c.Y));
-            Point max = new Point(Math.Max(Math.Max(a.X, b.X), c.X), Math.Max(Math.Max(a.Y, b.Y), c.Y));
+            Point min = new Point(
+                Math.Min(Math.Min(a.X, b.X), c.X),
+                Math.Min(Math.Min(a.Y, b.Y), c.Y)
+            );
+            Point max = new Point(
+                Math.Max(Math.Max(a.X, b.X), c.X),
+                Math.Max(Math.Max(a.Y, b.Y), c.Y)
+            );
 
             Point p = new Point();
             for (p.Y = min.Y; p.Y < max.Y; p.Y++)
@@ -555,7 +715,8 @@
                     int w1 = Orient(c, a, p);
                     int w2 = Orient(a, b, p);
 
-                    if (w0 >= 0 && w1 >= 0 && w2 >= 0) SetPixel(p, fgColor, bgColor, character);
+                    if (w0 >= 0 && w1 >= 0 && w2 >= 0)
+                        SetPixel(p, fgColor, bgColor, character);
                 }
             }
         }
