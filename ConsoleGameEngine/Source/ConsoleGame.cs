@@ -1,9 +1,9 @@
 ﻿namespace ConsoleGameEngine
 {
-    using Raylib_cs;
     using System;
     using System.Linq;
     using System.Threading;
+    using Raylib_cs;
 
     /// <summary>
     /// Abstract class to aid in Gamemaking.
@@ -49,16 +49,19 @@
             Create();
             StartTime = DateTime.Now;
 
-            if (m == FramerateMode.Unlimited) gameThread = new Thread(new ThreadStart(GameLoopUnlimited));
-            if (m == FramerateMode.MaxFps) gameThread = new Thread(new ThreadStart(GameLoopLocked));
+            if (m == FramerateMode.Unlimited)
+                gameThread = new Thread(new ThreadStart(GameLoopUnlimited));
+            if (m == FramerateMode.MaxFps)
+                gameThread = new Thread(new ThreadStart(GameLoopLocked));
             Running = true;
-            gameThread.Start();
+            //gameThread.Start();
 
             // gör special checks som ska gå utanför spelloopen
             // om spel-loopen hänger sig ska man fortfarande kunna avsluta
             while (Running)
             {
                 CheckForExit();
+                GameLoopLocked();
             }
         }
 
@@ -141,6 +144,10 @@
             if (Raylib.WindowShouldClose())
             {
                 Running = false;
+            }
+            else
+            {
+                Running = true;
             }
         }
 

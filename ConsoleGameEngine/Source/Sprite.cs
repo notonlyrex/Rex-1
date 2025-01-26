@@ -1,6 +1,7 @@
-﻿using SixLabors.ImageSharp;
+﻿using System;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
-using System;
 
 namespace ConsoleGameEngine
 {
@@ -84,11 +85,16 @@ namespace ConsoleGameEngine
                     // 86.149.124 - 10/11
                     // 39,68,56 - 2/3
 
-                    Span<Rgba32> pixelRowSpan = img.GetPixelRowSpan(y);
+                    Span<Rgba32> pixelRowSpan = img.DangerousGetPixelRowMemory(y).Span;
                     for (int x = 0; x < img.Width; x++)
                     {
                         if (pixelRowSpan[x].A > 0)
-                            result.Glyphs[x, y] = new Glyph() { c = AlphaToCharacter(pixelRowSpan[x]), bg = 0, fg = ColorToBasicColor(pixelRowSpan[x]) };
+                            result.Glyphs[x, y] = new Glyph()
+                            {
+                                c = AlphaToCharacter(pixelRowSpan[x]),
+                                bg = 0,
+                                fg = ColorToBasicColor(pixelRowSpan[x]),
+                            };
                     }
                 }
 

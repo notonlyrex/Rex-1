@@ -1,9 +1,9 @@
-﻿using ConsoleGameEngine;
-using RexMinus1.GameObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using ConsoleGameEngine;
+using RexMinus1.GameObjects;
 
 namespace RexMinus1.Levels
 {
@@ -26,28 +26,13 @@ namespace RexMinus1.Levels
 
             models.Clear();
 
-            models.Add(new Mine
-            {
-                Position = new Vector3(100, 0, 50),
-                RotationX = 1.241f
-            });
+            models.Add(new Mine { Position = new Vector3(100, 0, 50), RotationX = 1.241f });
 
-            models.Add(new Mine
-            {
-                Position = new Vector3(50, 0, 100),
-                RotationX = 2.11f
-            });
+            models.Add(new Mine { Position = new Vector3(50, 0, 100), RotationX = 2.11f });
 
-            models.Add(new Mine
-            {
-                Position = new Vector3(20, 0, 300),
-                RotationX = 3.41f
-            });
+            models.Add(new Mine { Position = new Vector3(20, 0, 300), RotationX = 3.41f });
 
-            models.Add(new Astronaut
-            {
-                Position = new Vector3(0, 0, 180),
-            });
+            models.Add(new Astronaut { Position = new Vector3(0, 0, 180) });
 
             //AudioPlaybackEngine.Instance.PlayCachedSound("startgame");
 
@@ -61,8 +46,28 @@ namespace RexMinus1.Levels
             laser = new Animations.Laser();
             timer = new Timer() { Span = TimeSpan.FromSeconds(5) };
 
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 54), Color = 4, Text = "WARNING: Visualisation system failure." }, null));
-            anims.Add((new HorizontalTextAnimation() { Origin = new Point(9, 55), Color = 4, Text = "Objects on screen may be closer than they appear." }, null));
+            anims.Add(
+                (
+                    new HorizontalTextAnimation()
+                    {
+                        Origin = new Point(9, 54),
+                        Color = 4,
+                        Text = "WARNING: Visualisation system failure.",
+                    },
+                    null
+                )
+            );
+            anims.Add(
+                (
+                    new HorizontalTextAnimation()
+                    {
+                        Origin = new Point(9, 55),
+                        Color = 4,
+                        Text = "Objects on screen may be closer than they appear.",
+                    },
+                    null
+                )
+            );
 
             base.Create();
         }
@@ -87,17 +92,26 @@ namespace RexMinus1.Levels
             }
 
             // zmiana pozycji gracza
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_LEFT) || Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_A))
+            if (
+                Engine.GetKeyDown(Raylib_cs.KeyboardKey.Left)
+                || Engine.GetKeyDown(Raylib_cs.KeyboardKey.A)
+            )
             {
                 ModelRenderer.UpdateCameraRotation(-0.05f);
             }
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_RIGHT) || Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_D))
+            if (
+                Engine.GetKeyDown(Raylib_cs.KeyboardKey.Right)
+                || Engine.GetKeyDown(Raylib_cs.KeyboardKey.D)
+            )
             {
                 ModelRenderer.UpdateCameraRotation(0.05f);
             }
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_UP) || Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_W))
+            if (
+                Engine.GetKeyDown(Raylib_cs.KeyboardKey.Up)
+                || Engine.GetKeyDown(Raylib_cs.KeyboardKey.W)
+            )
             {
                 if (PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToAccelerate)
                 {
@@ -107,7 +121,10 @@ namespace RexMinus1.Levels
                 }
             }
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_DOWN) || Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_S))
+            if (
+                Engine.GetKeyDown(Raylib_cs.KeyboardKey.Down)
+                || Engine.GetKeyDown(Raylib_cs.KeyboardKey.S)
+            )
             {
                 if (PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToAccelerate)
                 {
@@ -117,22 +134,22 @@ namespace RexMinus1.Levels
                 }
             }
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_Q))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.Q))
             {
                 ModelRenderer.UpdateCameraMovement(0.0f, -0.1f);
             }
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_E))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.E))
             {
                 ModelRenderer.UpdateCameraMovement(0.0f, 0.1f);
             }
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_R))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.R))
             {
                 ModelRenderer.UpdateFOV(0.1f);
             }
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_F))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.F))
             {
                 ModelRenderer.UpdateFOV(-0.1f);
             }
@@ -141,7 +158,10 @@ namespace RexMinus1.Levels
             ModelRenderer.UpdateCameraMovement(speed, 0.0f);
 
             // strzał
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_SPACE) && PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToShoot)
+            if (
+                Engine.GetKeyDown(Raylib_cs.KeyboardKey.Space)
+                && PlayerManager.Instance.Energy > PlayerManager.Instance.EnergyToShoot
+            )
             {
                 // animacja lasera
                 laser.Reset();

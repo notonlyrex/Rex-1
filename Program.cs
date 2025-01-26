@@ -1,5 +1,5 @@
-﻿using ConsoleGameEngine;
-using System;
+﻿using System;
+using ConsoleGameEngine;
 
 namespace RexMinus1
 {
@@ -20,38 +20,68 @@ namespace RexMinus1
             AudioPlaybackEngine.Instance.AddCachedSound("beep_2", "Assets/sound_beep_2.wav");
             AudioPlaybackEngine.Instance.AddCachedSound("beep_3", "Assets/sound_beep_3.wav");
 
-            AudioPlaybackEngine.Instance.AddCachedSound("beep_danger", "Assets/sound_beep_danger.wav");
-            AudioPlaybackEngine.Instance.AddCachedSound("beep_error", "Assets/sound_beep_error.wav");
-            AudioPlaybackEngine.Instance.AddCachedSound("beep_error_2", "Assets/sound_beep_error_2.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "beep_danger",
+                "Assets/sound_beep_danger.wav"
+            );
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "beep_error",
+                "Assets/sound_beep_error.wav"
+            );
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "beep_error_2",
+                "Assets/sound_beep_error_2.wav"
+            );
 
             AudioPlaybackEngine.Instance.AddCachedSound("boom", "Assets/sound_boom.wav");
             AudioPlaybackEngine.Instance.AddCachedSound("boom_2", "Assets/sound_boom_2.wav");
             AudioPlaybackEngine.Instance.AddCachedSound("boom_3", "Assets/sound_boom_3.wav");
 
-            AudioPlaybackEngine.Instance.AddCachedSound("electro_distortion", "Assets/sound_electro_distortion.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "electro_distortion",
+                "Assets/sound_electro_distortion.wav"
+            );
             AudioPlaybackEngine.Instance.AddCachedSound("gameover", "Assets/sound_gameover.wav");
 
             AudioPlaybackEngine.Instance.AddCachedSound("loading", "Assets/sound_loading.wav");
             AudioPlaybackEngine.Instance.AddCachedSound("loading_2", "Assets/sound_loading_2.wav");
             AudioPlaybackEngine.Instance.AddCachedSound("loading_3", "Assets/sound_loading_3.wav");
 
-            AudioPlaybackEngine.Instance.AddCachedSound("missile_launch", "Assets/sound_missile_launch.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "missile_launch",
+                "Assets/sound_missile_launch.wav"
+            );
 
-            AudioPlaybackEngine.Instance.AddCachedSound("radar_close", "Assets/sound_radar_close.wav");
-            AudioPlaybackEngine.Instance.AddCachedSound("radar_detection", "Assets/sound_radar_detection.wav");
-            AudioPlaybackEngine.Instance.AddCachedSound("radar_detection_2", "Assets/sound_radar_detection_2.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "radar_close",
+                "Assets/sound_radar_close.wav"
+            );
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "radar_detection",
+                "Assets/sound_radar_detection.wav"
+            );
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "radar_detection_2",
+                "Assets/sound_radar_detection_2.wav"
+            );
             AudioPlaybackEngine.Instance.AddCachedSound("radar_far", "Assets/sound_radar_far.wav");
 
-            AudioPlaybackEngine.Instance.AddCachedSound("shoot_laser", "Assets/sound_shoot_laser.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "shoot_laser",
+                "Assets/sound_shoot_laser.wav"
+            );
 
             AudioPlaybackEngine.Instance.AddCachedSound("startgame", "Assets/sound_startgame.wav");
-            AudioPlaybackEngine.Instance.AddCachedSound("startgame_2", "Assets/sound_startgame_2.wav");
+            AudioPlaybackEngine.Instance.AddCachedSound(
+                "startgame_2",
+                "Assets/sound_startgame_2.wav"
+            );
 
             AudioPlaybackEngine.Instance.Volume = 1.0f;
             MusicPlaybackEngine.Instance.Volume = 1.0f;
 
             // parametry wyświetlania
-            new RexMinus1().Construct(128, 64, 8, 8, FramerateMode.MaxFps);
+            new RexMinus1().Construct(128, 64, 16, 16, FramerateMode.MaxFps);
 
             Exit();
         }
@@ -120,14 +150,14 @@ namespace RexMinus1
         {
             levelManager.CurrentLevel.Update();
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_F1))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.F1))
                 drawDebug = !drawDebug;
 
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_ESCAPE))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.Escape))
                 Exit();
 
 #if DEBUG
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_F2))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.F2))
                 levelManager.GoToNext();
 #endif
         }

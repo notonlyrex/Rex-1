@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Rex-1": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}

@@ -1,5 +1,5 @@
-﻿using ConsoleGameEngine;
-using System;
+﻿using System;
+using ConsoleGameEngine;
 
 namespace RexMinus1.Levels
 {
@@ -32,7 +32,7 @@ namespace RexMinus1.Levels
 
         public override void Update()
         {
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_SPACE))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.Space))
             {
                 LevelManager.GoTo(LevelManager.Welcome);
             }
@@ -43,7 +43,10 @@ namespace RexMinus1.Levels
         public override void Render()
         {
             base.Render();
-            SpriteRenderer.RenderSingle(new Point(0, 0), Sprite.FromFile("Assets/sprite_youwin.png"));
+            SpriteRenderer.RenderSingle(
+                new Point(0, 0),
+                Sprite.FromFile("Assets/sprite_youwin.png")
+            );
 
             Engine.WriteTextCenteredHorizontally("Press SPACE to continue", 62, 8, 0);
         }

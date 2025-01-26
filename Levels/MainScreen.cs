@@ -1,5 +1,5 @@
-﻿using ConsoleGameEngine;
-using System;
+﻿using System;
+using ConsoleGameEngine;
 
 namespace RexMinus1.Levels
 {
@@ -48,7 +48,7 @@ namespace RexMinus1.Levels
 
         public override void Update()
         {
-            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.KEY_SPACE))
+            if (Engine.GetKeyDown(Raylib_cs.KeyboardKey.Space))
             {
                 LevelManager.GoTo(LevelManager.Intro);
             }
